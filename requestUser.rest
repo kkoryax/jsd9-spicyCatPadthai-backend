@@ -2,18 +2,89 @@
 GET http://localhost:3000/api/auth/get-all-users
 Content-Type: application/json
 
+
+### Get user by Id
+POST http://localhost:3000/api/auth/user/680cab59cd4df1585a364622
+Content-Type: application/json
+
+
 ### Register
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
+
 {
-    "email" : "beta@example.com",
+    "email" : "Hellofordelete@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "Kun",
-    "dateOfBirth": "1999-01-02",
-    "address": "11/111 KFC Pizza Pizza",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-02",
+    "address": "11/111 KFC Hungry Hungry",
     "city": "Bangkok",
     "country": "Thailand",
-    "phoneNumber": "091-234-5678"
+    "phoneNumber": "091-234-5679"
 }
+
+
+
+
+### login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+
+{
+    "email" : "Hellowaiwaihi@example.com",
+    "password": "katsubook"
+}
+
+
+
+
+### Update a user (some fields)
+PATCH  http://localhost:3000/api/auth/user/680cab59cd4df1585a364622
+Content-Type: application/json
+
+
+{
+    "email" : "Hellowaiwaihi@example.com",
+    "password": "katsubook",
+    "name": "KatsuOK",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-03"
+}
+
+
+### Update a user (all fields)
+PUT  http://localhost:3000/api/auth/user/680cab59cd4df1585a364622
+Content-Type: application/json
+
+
+{
+    "email" : "Hellofordelete@example.com",
+    "password": "katsubook",
+    "name": "Katsu",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-02",
+    "address": "11/111 KFC Hungry Hungry",
+    "city": "Bangkok",
+    "country": "Thailand",
+    "phoneNumber": "091-234-5679"
+}
+
+
+
+
+
+
+
+
+### Delete a user
+DELETE  http://localhost:3000/api/auth/user/680ca7ed47cfc591ab3cb987
+Content-Type: application/json
+
+
+
+
+
+
