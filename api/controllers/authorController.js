@@ -1,5 +1,3 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import { Author } from "../../models/Author.js";
 
 //Get all authors
@@ -29,18 +27,19 @@ export const addAuthor = async (req, res) => {
     });
   }
   try {
-    const existingAuthor = await Author.findOne({ email });
+    const existingAuthor = await Author.findOne({ author_name });
     if (existingAuthor) {
       return res.status(409).json({
         error: true,
         message: "This author name already exists",
       });
     }
-    await author_name.save();
+    const newAuthor = new Author({ author_name });
+    await newAuthor.save();
 
     res.status(201).json({
       error: false,
-      message: "User registered successfully",
+      message: "Author added successfully",
     });
   } catch (err) {
     res.status(500).json({
@@ -55,7 +54,7 @@ export const getAuthorById = async (req, res) => {
   const { _id } = req.params;
   try {
     const author = await Author.findOne({ _id });
-    if (!_id) {
+    if (!author) {
       return res.status(404).json({
         error: true,
         message: "Author not found!",

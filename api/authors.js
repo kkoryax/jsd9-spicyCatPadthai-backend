@@ -1,5 +1,11 @@
 import express from "express";
-import { getAllAuthors, addAuthor, updateAuthorById, deleteAuthorById, getAuthorById } from "./controllers/authorController";
+import {
+  getAllAuthors,
+  addAuthor,
+  updateAuthorById,
+  deleteAuthorById,
+  getAuthorById,
+} from "./controllers/authorController.js";
 
 const router = express.Router();
 
@@ -16,6 +22,6 @@ router.post("/authors", addAuthor);
 router.put("/authors/:_id", updateAuthorById);
 
 // Delete product
-router.delete("/authors/:_id", deleteAuthorById );
+router.delete("/authors/:_id", deleteAuthorById);
 
 export default router;
