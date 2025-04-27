@@ -1,16 +1,10 @@
 import express from "express";
+import { getAllTitles } from "./controllers/titleControllers";
 
 const router = express.Router();
 
-export default() => {
-    //Create GET
-    router.get("/titles", (req, res) => {
-        const {name, description, picture } = req.body
-        try {
+//GET all titles
+router.get("/titles", getAllTitles);
 
-        } catch (error) {
-            
-        }
-    })
-    return router;
-}
+//Create new title
+router.post("/titles")
