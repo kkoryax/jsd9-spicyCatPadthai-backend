@@ -1,10 +1,12 @@
 import express from "express";
-import { getAllTitles } from "./controllers/titleControllers";
+import { getAllTitles, createNewTitle } from "./controllers/titleControllers.js";
 
 const router = express.Router();
 
 //GET all titles
-router.get("/titles", getAllTitles);
+router.get("/titles/get-all-titles", getAllTitles);
 
 //Create new title
-router.post("/titles")
+router.post("/titles/create-new-title", createNewTitle);
+
+export default router;

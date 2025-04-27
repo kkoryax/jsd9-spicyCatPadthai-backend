@@ -17,3 +17,7 @@ Content-Type: application/json
     "country": "Thailand",
     "phoneNumber": "091-234-5678"
 }
+
+### GET all title
+GET http://localhost:3000/api/titles/get-all-titles
+Content-Type: application/json
