@@ -13,15 +13,15 @@ const router = express.Router();
 router.get("/products", getAllProducts);
 
 // GET product by id
-router.get("/products/:product_id", getProductById);
+router.get("/products/:_id", getProductById);
 
 // Create a product
 router.post("/products", createProduct);
 
 // Update product
-router.put("/products/:product_id", updateProductById);
+router.put("/products/:_id", updateProductById);
 
 // Delete product
-router.delete("/products/:product_id", deleteProductById);
+router.delete("/products/:_id", deleteProductById);
 
 export default router;

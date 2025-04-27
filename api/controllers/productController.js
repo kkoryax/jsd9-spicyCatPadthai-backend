@@ -43,7 +43,7 @@ export const getProductById = async (req, res) => {
 
 // Create a new product
 export const createProduct = async (req, res) => {
-  const {  name_vol, volume_no, description, price } = req.body;
+  const { name_vol, volume_no, description, price } = req.body;
   try {
     const product = await Product.create({
       name_vol,
@@ -105,7 +105,7 @@ export const deleteProductById = async (req, res) => {
         message: "Product not found!",
       });
     }
-    await Product.deleteOne({ _id: product._id });
+    await Product.deleteOne({ _id });
     res.json({
       error: false,
       message: "Product deleted successfully!",
