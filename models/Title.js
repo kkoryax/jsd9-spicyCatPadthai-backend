@@ -1,6 +1,4 @@
 import { Schema, model } from "mongoose";
-import bcrypt from "bcrypt";
-import mongoose from "mongoose";
 
 const TitleSchema = new Schema({
     name: {type: String, required: true},

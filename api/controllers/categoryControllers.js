@@ -44,3 +44,37 @@ export const searchCategory = async(req, res) => {
         });
     }
 };
+
+//CREATE category
+ export const createCategory = async(req, res) => {
+    const { name } = req.body
+    if(!name) {
+        return res.status(400).json({
+            error: true,
+            message: "All fields are required"
+        });
+    }
+    try {
+        const existingCategory = await Category.findOne({name})
+        if (existingCategory) {
+            return res.status(409).json({
+                error: true,
+                message: "Already have this category"
+            });
+        }
+        const category = new Category ({
+            name
+        });
+        await category.save();
+
+        res.status(201).json({
+            error: false,
+            message: "Category created successfully"
+        })
+    } catch (err) {
+        res.status(500).json({
+            error: false,
+            message: "Server error"
+        });
+    }
+};
