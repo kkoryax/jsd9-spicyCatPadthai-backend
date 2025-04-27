@@ -27,10 +27,14 @@ POST http://localhost:3000/api/titles/create-new-title
 Content-Type: application/json
 
 {
-    "name": "no title",
-    "description": "this is test title"
+    "name": "sheik",
+    "description": "this is sheik"
 }
 
 ### Search title
-GET http://localhost:3000/api/titles/search-title?query=no
+GET http://localhost:3000/api/titles/search-title?query=sheik
+Content-Type: application/json
+
+###Delete title
+DELETE http://localhost:3000/api/titles/680de1f4e427df040ced5f52
 Content-Type: application/json

@@ -72,3 +72,25 @@ export const searchTitle = async(req, res) => {
         });
     }
 };
+
+//DELETE title
+export const deleteTitle = async(req, res) => {
+    const { _id } = req.body
+    try {
+        const deleteTitle = await Title.findByIdAndDeletefindOneAndDelete({ _id: _id });
+        if (!deleteTitle) {
+            return res.status(404).json({
+                message: "Title not found"
+            });
+        }
+        res.json({
+            message: "Title deleted successfully"
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: true,
+            message: "Internal Server Error",
+            details: err.message
+        });
+    }
+};
