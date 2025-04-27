@@ -19,10 +19,10 @@ export const getAllProducts = async (req, res) => {
 
 // Get product by ID
 export const getProductById = async (req, res) => {
-  const { product_id } = req.params;
+  const { _id } = req.params;
   try {
-    const product = await Product.findOne({ product_id });
-    if (!product_id) {
+    const product = await Product.findOne({ _id });
+    if (!_id) {
       return res.status(404).json({
         error: true,
         message: "Product not found!",
@@ -43,10 +43,9 @@ export const getProductById = async (req, res) => {
 
 // Create a new product
 export const createProduct = async (req, res) => {
-  const { product_id, name_vol, volume_no, description, price } = req.body;
+  const {  name_vol, volume_no, description, price } = req.body;
   try {
     const product = await Product.create({
-      product_id,
       name_vol,
       volume_no,
       description,
@@ -68,11 +67,11 @@ export const createProduct = async (req, res) => {
 
 // Update a product by ID
 export const updateProductById = async (req, res) => {
-  const { product_id } = req.params;
+  const { _id } = req.params;
   const { name_vol, volume_no, description, price, quantity } = req.body;
   try {
     const product = await Product.updateOne(
-      { product_id },
+      { _id },
       { $set: { name_vol, volume_no, description, price, quantity } }
     );
     if (product.matchedCount === 0) {
@@ -97,9 +96,9 @@ export const updateProductById = async (req, res) => {
 
 // Delete a product by ID
 export const deleteProductById = async (req, res) => {
-  const { product_id } = req.params;
+  const { _id } = req.params;
   try {
-    const product = await Product.findOne({ product_id });
+    const product = await Product.findOne({ _id });
     if (!product) {
       return res.status(404).json({
         error: true,
