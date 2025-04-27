@@ -17,6 +17,34 @@ export const getAllTitles = async(req, res) => {
     }
 };
 
+//GET title by search query
+export const searchTitle = async(req, res) => {
+    const { query } = req.query
+    if (!query) {
+        res.status(400).json({
+            error: true,
+            message: "Search query is required"
+        });
+    }
+    try {
+        const matchingTitle = await Title.find({
+            $or: [
+                {name: {$regex: new RegExp(query, "i")}}
+            ]
+        });
+        res.json({
+            error: false,
+            titles: matchingTitle,
+            message: "Matching title via search query retrieve successful"
+        })
+    } catch (err) {
+        res.status(500).json({
+            error: true,
+            message: "Internal Server Error"
+        });
+    }
+};
+
  //CREATE new title
  export const createNewTitle = async(req, res) => {
     const { name, description } = req.body
