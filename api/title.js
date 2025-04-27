@@ -4,15 +4,18 @@ import { getAllTitles, createNewTitle, searchTitle, deleteTitle } from "./contro
 const router = express.Router();
 
 //GET all titles
-router.get("/titles/get-all-titles", getAllTitles);
+router.get("/titles/get-all", getAllTitles);
 
 //Create new title
-router.post("/titles/create-new-title", createNewTitle);
+router.post("/titles/create", createNewTitle);
 
 //Search title
-router.get("/titles/search-title", searchTitle);
+router.get("/titles/search", searchTitle);
 
 //DELETE title
 router.delete("/titles/:id", deleteTitle);
+
+//Update title
+// router.put("/titles/:id");
 
 export default router;

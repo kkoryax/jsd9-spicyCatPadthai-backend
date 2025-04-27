@@ -19,11 +19,11 @@ Content-Type: application/json
 }
 
 ### GET all title
-GET http://localhost:3000/api/titles/get-all-titles
+GET http://localhost:3000/api/titles/get-all
 Content-Type: application/json
 
 ### Register
-POST http://localhost:3000/api/titles/create-new-title
+POST http://localhost:3000/api/titles/create
 Content-Type: application/json
 
 {
@@ -32,9 +32,13 @@ Content-Type: application/json
 }
 
 ### Search title
-GET http://localhost:3000/api/titles/search-title?query=sheik
+GET http://localhost:3000/api/titles/search?query=sheik
 Content-Type: application/json
 
 ###Delete title
 DELETE http://localhost:3000/api/titles/680de1f4e427df040ced5f52
+Content-Type: application/json
+
+###Get all category
+GET http://localhost:3000/api/category/get-all
 Content-Type: application/json

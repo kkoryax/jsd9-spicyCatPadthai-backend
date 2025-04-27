@@ -73,11 +73,20 @@ export const searchTitle = async(req, res) => {
     }
 };
 
+//Update title
+export const updateTitle = async(req, res) => {
+    try {
+
+    } catch (err) {
+
+    }
+}
+
 //DELETE title
 export const deleteTitle = async(req, res) => {
     const { _id } = req.body
     try {
-        const deleteTitle = await Title.findByIdAndDeletefindOneAndDelete({ _id: _id });
+        const deleteTitle = await Title.findByIdAndDeletefindOneAndDelete(_id);
         if (!deleteTitle) {
             return res.status(404).json({
                 message: "Title not found"
