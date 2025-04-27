@@ -21,3 +21,12 @@ Content-Type: application/json
 ### GET all title
 GET http://localhost:3000/api/titles/get-all-titles
 Content-Type: application/json
+
+### Register
+POST http://localhost:3000/api/titles/create-new-title
+Content-Type: application/json
+
+{
+    "name": "no title",
+    "description": "this is test title"
+}

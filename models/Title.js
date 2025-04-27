@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 const TitleSchema = new Schema({
     name: {type: String},
     description: {type: String},
+    // authorId: {type: String},
     /* picture: {type: String} */
 });
 
