@@ -1,0 +1,16 @@
+###
+POST http://localhost:3000/api/create-order
+Content-Type: application/json
+
+{
+  "total_price": 99.99,
+  "tracking_number": "TRACK-12345",
+  "shipping_address": "789 Pine Lane, Anytown, CA 90210",
+  "order_status": "processing",
+  "quantity": 2,
+  "price": 49.99,
+  "amount": 99.99,
+  "payment_method": "credit card",
+  "payment_status": "paid",
+  "payment_date": "2025-04-27T17:00:00.000Z"
+}

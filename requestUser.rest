@@ -7,10 +7,10 @@ POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-    "email" : "beta@example.com",
+    "email" : "save@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "Kun",
+    "lastName": "Save",
     "dateOfBirth": "1999-01-02",
     "address": "11/111 KFC Pizza Pizza",
     "city": "Bangkok",

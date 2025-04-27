@@ -1,7 +1,8 @@
 import express from "express";
+import { createOrder } from "./controllers/orderControllers.js";
 
 const router = express.Router();
 
-export default(db) => {
-    return router;
-}
+router.post("/create-order", createOrder);
+
+export default router;
