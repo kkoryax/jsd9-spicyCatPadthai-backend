@@ -10,7 +10,7 @@ router.get("/category/get-all", getAllCategory);
 router.get("/category/search", searchCategory);
 
 //CREATE category
-router.post("category/create", createCategory);
+router.post("/category/create", createCategory);
 
 //DELETE category
 /* router.delete("/category/:id"); */

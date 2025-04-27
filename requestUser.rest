@@ -52,5 +52,5 @@ POST http://localhost:3000/api/category/create
 Content-Type: application/json
 
 {
-    "name": "Horror"
+    "name": "Survival"
 }
