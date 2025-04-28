@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 
 const TitleSchema = new Schema({
-    name: {type: String, required: true},
+    title_name: {type: String, required: true},
     description: {type: String, required: true},
-    author_id: {type: String, required: true},
+    /* author_id: {type: String, required: true}, */
     /* picture: {type: String} */
 });
 

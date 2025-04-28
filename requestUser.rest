@@ -22,13 +22,13 @@ Content-Type: application/json
 GET http://localhost:3000/api/titles/get-all
 Content-Type: application/json
 
-### Register
+### Create new title
 POST http://localhost:3000/api/titles/create
 Content-Type: application/json
 
 {
-    "name": "sheik",
-    "description": "this is sheik"
+    "title_name": "katsu",
+    "description": "this is katsu"
 }
 
 ### Search title
@@ -44,7 +44,7 @@ GET http://localhost:3000/api/category/get-all
 Content-Type: application/json
 
 ### Search category
-GET http://localhost:3000/api/category/search?query=
+GET http://localhost:3000/api/category/search?query=Action
 Content-Type: application/json
 
 ###Create category
@@ -52,5 +52,5 @@ POST http://localhost:3000/api/category/create
 Content-Type: application/json
 
 {
-    "name": "Survival"
+    "category_name": "Fantasy"
 }

@@ -29,12 +29,12 @@ export const searchTitle = async(req, res) => {
     try {
         const matchingTitle = await Title.find({
             $or: [
-                {name: {$regex: new RegExp(query, "i")}}
+                {title_name: {$regex: new RegExp(query, "i")}}
             ]
         });
         res.json({
             error: false,
-            titles: matchingTitle,
+            title_name: matchingTitle,
             message: "Matching title via search query retrieve successful"
         })
     } catch (err) {
@@ -47,8 +47,8 @@ export const searchTitle = async(req, res) => {
 
  //CREATE new title
  export const createNewTitle = async(req, res) => {
-    const { name, description } = req.body
-    if(!name || !description) {
+    const { title_name, description } = req.body
+    if(!title_name || !description) {
         return res.status(400).json({
             error: true,
             message: "All fields are required"
@@ -56,7 +56,7 @@ export const searchTitle = async(req, res) => {
     }
     try {
         const title = new Title ({
-            name,
+            title_name,
             description
         });
         await title.save();
