@@ -36,7 +36,7 @@ GET http://localhost:3000/api/titles/search?query=sheik
 Content-Type: application/json
 
 ###Delete title
-DELETE http://localhost:3000/api/titles/680de1f4e427df040ced5f52
+DELETE http://localhost:3000/api/titles/680dd7e3aa1695eb31c293d6
 Content-Type: application/json
 
 ###Get all category

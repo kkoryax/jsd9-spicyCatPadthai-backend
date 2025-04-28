@@ -13,7 +13,7 @@ router.post("/titles/create", createNewTitle);
 router.get("/titles/search", searchTitle);
 
 //DELETE title
-router.delete("/titles/:id", deleteTitle);
+router.delete("/titles/:titleId", deleteTitle);
 
 //Update title
 // router.put("/titles/:id");
