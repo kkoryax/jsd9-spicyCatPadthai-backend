@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from "cors";
 import apiRoute from "./api/routes.js"
 
 dotenv.config();
@@ -8,6 +9,11 @@ dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT
+
+app.use(cors({
+    origin: "http://localhost:5173", 
+    credentials: true
+  }));
 
 //CREATE Middleware to parse JSON to JavaScript Object
 app.use(express.json());

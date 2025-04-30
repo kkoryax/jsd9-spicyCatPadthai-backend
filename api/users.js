@@ -10,7 +10,7 @@ router.get("/auth/get-all-users", getAllUsers);
 
 
 //Get user by Id
-router.post("/auth/user/:id", GetUserById);
+router.get("/auth/user/:id", GetUserById);
 
 
 //Register a user

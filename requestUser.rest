@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 ### Get user by Id
-POST http://localhost:3000/api/auth/user/680cab59cd4df1585a364622
+GET http://localhost:3000/api/auth/user/680b9ac486b3842daeafca35
 Content-Type: application/json
 
 
@@ -42,12 +42,12 @@ Content-Type: application/json
 
 
 ### Update a user (some fields)
-PATCH  http://localhost:3000/api/auth/user/680cab59cd4df1585a364622
+PATCH  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
 Content-Type: application/json
 
 
 {
-    "email" : "Hellowaiwaihi@example.com",
+    "email" : "Hellofordelete@example.com",
     "password": "katsubook",
     "name": "KatsuOK",
     "lastName": "waipana",
@@ -56,14 +56,14 @@ Content-Type: application/json
 
 
 ### Update a user (all fields)
-PUT  http://localhost:3000/api/auth/user/680cab59cd4df1585a364622
+PUT  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
 Content-Type: application/json
 
 
 {
     "email" : "Hellofordelete@example.com",
     "password": "katsubook",
-    "name": "Katsu",
+    "name": "Katsuokmakmak",
     "lastName": "waipana",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
@@ -77,10 +77,8 @@ Content-Type: application/json
 
 
 
-
-
 ### Delete a user
-DELETE  http://localhost:3000/api/auth/user/680ca7ed47cfc591ab3cb987
+DELETE  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
 Content-Type: application/json
 
 
