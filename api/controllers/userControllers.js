@@ -185,6 +185,53 @@ export const updateUser = async (req,res) => {
 }
 
 
+// Update User Password Controller
+export const updateUserPassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        error: true,
+        message: "Both current and new passwords are required",
+      });
+    }
+  
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return res.status(404).json({
+          error: true,
+          message: "User not found",
+        });
+      }
+  
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(401).json({
+          error: true,
+          message: "Incorrect current password",
+        });
+      }
+      // Assign the plain text new password. The pre('save') hook in User.js will handle hashing.
+      user.password = newPassword;
+      await user.save();
+      console.log("New password saved:", user.password);
+  
+      res.status(200).json({
+        error: false,
+        message: "Password updated successfully",
+      });
+  
+    } catch (err) {
+      res.status(500).json({
+        error: true,
+        message: "Failed to update password",
+        details: err.message,
+      });
+    }
+  };
+
 // Delete a user Controller
 
 

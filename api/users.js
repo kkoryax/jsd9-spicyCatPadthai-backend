@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, GetUserById, registerUser, loginUser, updateUser, deleteUser} from "./controllers/userControllers.js";
+import { getAllUsers, GetUserById, registerUser, loginUser, updateUser, updateUserPassword, deleteUser} from "./controllers/userControllers.js";
 
 
 const router = express.Router();
@@ -28,6 +28,8 @@ router.patch("/auth/user/:id", updateUser);
 //Update user (All fields)
 router.put("/auth/user/:id", updateUser);
 
+// Update User Password
+router.patch("/auth/user/:id/password", updateUserPassword);
 
 //Delete User
 router.delete("/auth/user/:id", deleteUser);

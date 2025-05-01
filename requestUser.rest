@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 ### Get user by Id
-GET http://localhost:3000/api/auth/user/680b9ac486b3842daeafca35
+GET http://localhost:3000/api/auth/user/6813366885e8a12f2588bbae
 Content-Type: application/json
 
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofordelete@example.com",
+    "email" : "Hellofortestpassword@example.com",
     "password": "katsubook",
     "name": "Katsu",
     "lastName": "waipana",
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellowaiwaihi@example.com",
+    "email" : "Hellofortestpassword2@example.com",
     "password": "katsubook"
 }
 
@@ -42,14 +42,13 @@ Content-Type: application/json
 
 
 ### Update a user (some fields)
-PATCH  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
+PATCH  http://localhost:3000/api/auth/user/68133c3d8e58fa3222fb7ad4
 Content-Type: application/json
 
 
 {
-    "email" : "Hellofordelete@example.com",
-    "password": "katsubook",
-    "name": "KatsuOK",
+    "email" : "Hellofortestpassword2@example.com",
+    "name": "KatsuOKmak",
     "lastName": "waipana",
     "dateOfBirth": "1999-02-03"
 }
@@ -72,13 +71,18 @@ Content-Type: application/json
     "phoneNumber": "091-234-5679"
 }
 
+### Update Password
+PATCH  http://localhost:3000/api/auth/user/68133c3d8e58fa3222fb7ad4/password
+Content-Type: application/json
 
-
-
+{
+    "currentPassword" : "katsubook12",
+    "newPassword": "katsubook"
+}
 
 
 ### Delete a user
-DELETE  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
+DELETE  http://localhost:3000/api/auth/user/681339109c200d2466674754
 Content-Type: application/json
 
 
