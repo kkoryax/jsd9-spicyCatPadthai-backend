@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 ### Get user by Id
-GET http://localhost:3000/api/auth/user/6813366885e8a12f2588bbae
+GET http://localhost:3000/api/auth/user/680c9a6583cf810628b94792
 Content-Type: application/json
 
 
@@ -17,7 +17,7 @@ Content-Type: application/json
     "email" : "Hellofortestpassword@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "waipana",
+    "lastName": "testpassword",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
     "city": "Bangkok",
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestpassword2@example.com",
+    "email" : "Hellofortestpassword@example.com",
     "password": "katsubook"
 }
 
