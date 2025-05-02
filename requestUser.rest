@@ -17,3 +17,40 @@ Content-Type: application/json
     "country": "Thailand",
     "phoneNumber": "091-234-5678"
 }
+
+### GET all title
+GET http://localhost:3000/api/titles/get-all
+Content-Type: application/json
+
+### Register
+POST http://localhost:3000/api/titles/create
+Content-Type: application/json
+
+{
+    "name": "sheik",
+    "description": "this is sheik"
+}
+
+### Search title
+GET http://localhost:3000/api/titles/search?query=sheik
+Content-Type: application/json
+
+###Delete title
+DELETE http://localhost:3000/api/titles/680dd7e3aa1695eb31c293d6
+Content-Type: application/json
+
+###Get all category
+GET http://localhost:3000/api/category/get-all
+Content-Type: application/json
+
+### Search category
+GET http://localhost:3000/api/category/search?query=
+Content-Type: application/json
+
+###Create category
+POST http://localhost:3000/api/category/create
+Content-Type: application/json
+
+{
+    "name": "Survival"
+}

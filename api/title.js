@@ -1,16 +1,21 @@
 import express from "express";
+import { getAllTitles, createNewTitle, searchTitle, deleteTitle } from "./controllers/titleControllers.js";
 
 const router = express.Router();
 
-export default() => {
-    //Create GET
-    router.get("/titles", (req, res) => {
-        const {name, description, picture } = req.body
-        try {
+//GET all titles
+router.get("/titles/get-all", getAllTitles);
 
-        } catch (error) {
-            
-        }
-    })
-    return router;
-}
+//Create new title
+router.post("/titles/create", createNewTitle);
+
+//Search title
+router.get("/titles/search", searchTitle);
+
+//DELETE title
+router.delete("/titles/:titleId", deleteTitle);
+
+//Update title
+// router.put("/titles/:id");
+
+export default router;

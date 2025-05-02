@@ -30,7 +30,6 @@ export const registerUser = async(req, res) => {
         address,
         city,
         country,
-        phoneNumber
     } = req.body
     if(!email || !password || !name || !lastName || !dateOfBirth || !address || !city || !country || !phoneNumber) {
         return res.status(400).json({
