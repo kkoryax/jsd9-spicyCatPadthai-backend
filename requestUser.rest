@@ -28,7 +28,8 @@ Content-Type: application/json
 
 {
     "title_name": "katsu",
-    "description": "this is katsu"
+    "description": "this is katsu",
+    "author_id": "680e51d21d001b1079637881"
 }
 
 ### Search title

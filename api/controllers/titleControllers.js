@@ -47,8 +47,8 @@ export const searchTitle = async(req, res) => {
 
  //CREATE new title
  export const createNewTitle = async(req, res) => {
-    const { title_name, description } = req.body
-    if(!title_name || !description) {
+    const { title_name, description, author_id } = req.body
+    if(!title_name || !description || !author_id) {
         return res.status(400).json({
             error: true,
             message: "All fields are required"
@@ -57,7 +57,8 @@ export const searchTitle = async(req, res) => {
     try {
         const title = new Title ({
             title_name,
-            description
+            description,
+            author_id
         });
         await title.save();
 

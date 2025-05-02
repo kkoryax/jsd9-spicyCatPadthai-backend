@@ -29,6 +29,7 @@ export const registerUser = async(req, res) => {
         dateOfBirth,
         address,
         city,
+        phoneNumber,
         country,
     } = req.body
     if(!email || !password || !name || !lastName || !dateOfBirth || !address || !city || !country || !phoneNumber) {
