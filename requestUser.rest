@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### Search title
-GET http://localhost:3000/api/titles/search?query=sheik
+GET http://localhost:3000/api/titles/search?query=katsu
 Content-Type: application/json
 
 ###Delete title
