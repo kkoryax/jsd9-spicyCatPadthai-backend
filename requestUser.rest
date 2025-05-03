@@ -2,56 +2,91 @@
 GET http://localhost:3000/api/auth/get-all-users
 Content-Type: application/json
 
+
+### Get user by Id
+GET http://localhost:3000/api/auth/user/6813366885e8a12f2588bbae
+Content-Type: application/json
+
+
 ### Register
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
+
 {
-    "email" : "save@example.com",
+    "email" : "Hellofortestpassword@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "Save",
-    "dateOfBirth": "1999-01-02",
-    "address": "11/111 KFC Pizza Pizza",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-02",
+    "address": "11/111 KFC Hungry Hungry",
     "city": "Bangkok",
     "country": "Thailand",
-    "phoneNumber": "091-234-5678"
+    "phoneNumber": "091-234-5679"
 }
 
-### GET all title
-GET http://localhost:3000/api/titles/get-all
+
+
+
+### login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
-### Create new title
-POST http://localhost:3000/api/titles/create
+
+{
+    "email" : "Hellofortestpassword2@example.com",
+    "password": "katsubook"
+}
+
+
+
+
+### Update a user (some fields)
+PATCH  http://localhost:3000/api/auth/user/68133c3d8e58fa3222fb7ad4
+Content-Type: application/json
+
+
+{
+    "email" : "Hellofortestpassword2@example.com",
+    "name": "KatsuOKmak",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-03"
+}
+
+
+### Update a user (all fields)
+PUT  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
+Content-Type: application/json
+
+
+{
+    "email" : "Hellofordelete@example.com",
+    "password": "katsubook",
+    "name": "Katsuokmakmak",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-02",
+    "address": "11/111 KFC Hungry Hungry",
+    "city": "Bangkok",
+    "country": "Thailand",
+    "phoneNumber": "091-234-5679"
+}
+
+### Update Password
+PATCH  http://localhost:3000/api/auth/user/68133c3d8e58fa3222fb7ad4/password
 Content-Type: application/json
 
 {
-    "title_name": "katsu",
-    "description": "this is katsu",
-    "author_id": "680e51d21d001b1079637881"
+    "currentPassword" : "katsubook12",
+    "newPassword": "katsubook"
 }
 
-### Search title
-GET http://localhost:3000/api/titles/search?query=sheik
+
+### Delete a user
+DELETE  http://localhost:3000/api/auth/user/681339109c200d2466674754
 Content-Type: application/json
 
-###Delete title
-DELETE http://localhost:3000/api/titles/680dd7e3aa1695eb31c293d6
-Content-Type: application/json
 
-###Get all category
-GET http://localhost:3000/api/category/get-all
-Content-Type: application/json
 
-### Search category
-GET http://localhost:3000/api/category/search?query=Action
-Content-Type: application/json
 
-###Create category
-POST http://localhost:3000/api/category/create
-Content-Type: application/json
 
-{
-    "category_name": "Fantasy"
-}
+
