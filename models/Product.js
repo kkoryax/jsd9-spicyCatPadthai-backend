@@ -1,5 +1,4 @@
-import { Schema, model } from "mongoose";
-import mongoose from "mongoose";
+import mongoose,{ Schema, model } from "mongoose";
 
 const ProductSchema = new Schema({
   name_vol: { type: String, required: true, unique: true },
@@ -7,15 +6,23 @@ const ProductSchema = new Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, default: 1 },
-  // title_id: { type: mongoose.Schema.Types.ObjectId, ref: "Title" },
-  author_id: { type: mongoose.Schema.Types.ObjectId, ref: "Author" },
+  title_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Title",
+    required: true,
+  },
+  author_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Author",
+    required: true,
+  },
   //   picture: { type: String },
   product_status: {
     type: String,
     enum: ["available", "out of stock", "discontinued"],
     default: "available",
   },
-  createdOn: { type: Date, default: Date.now },
+  createdOn: { type: Date, default: new Date().getTime() },
 });
 
 export const Product = model("Product", ProductSchema);

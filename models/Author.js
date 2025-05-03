@@ -2,7 +2,11 @@ import { Schema, model } from "mongoose";
 
 const AuthorSchema = new Schema({
   author_name: { type: String, required: true },
-  createdOn: { type: Date, default: Date.now },
+    title_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Title",
+    required: true,
+  },
 });
 
 export const Author = model("Author", AuthorSchema);

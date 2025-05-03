@@ -8,7 +8,11 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   dateOfBirth: { type: Date },
   address: { type: String },
-  city: { type: String },
+  city_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "City",
+    required: true,
+  },
   country: { type: String },
   phoneNumber: { type: String },
   createdOn: { type: Date, default: new Date().getTime() },
