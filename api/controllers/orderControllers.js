@@ -8,9 +8,9 @@ export const createOrder = async (req, res) => {
     tracking_number,
     shipping_address,
     order_status,
-    quantity, 
-    price, 
-    amount, 
+    quantity,
+    price,
+    amount,
     payment_method,
     payment_status,
     payment_date,
@@ -39,7 +39,7 @@ export const createOrder = async (req, res) => {
       payment_date,
     });
     await payment.save();
-    
+
     res.status(201).json({
       error: false,
       message: "Order created successfully",
@@ -48,6 +48,30 @@ export const createOrder = async (req, res) => {
     res.status(500).json({
       error: true,
       message: "Failed to create order",
+      details: err.message,
+    });
+  }
+};
+export const purchase = async (req, res) => {
+  const { order_id } = req.params;
+  const {payment_status} = req.body;
+  try {
+    const order = await Order.findById(order_id);
+    if (!order) {
+      return res.status(404).json({
+        error: true,
+        message: "Order not found",
+      });
+    }
+    
+    res.json({
+      error: false,
+      order,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: true,
+      message: "Failed to fetch order",
       details: err.message,
     });
   }

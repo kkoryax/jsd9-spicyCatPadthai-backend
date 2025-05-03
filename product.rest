@@ -1,0 +1,32 @@
+### GET all products
+GET http://localhost:3000/products
+
+
+### Create a product
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+    "name_vol": "การหายตัวไป",
+    "volume_no": "29",
+    "description": "โดยมีเงื่อนงำซ่อนอยู่ในความทรงจำ",
+    "price": 120
+  }
+
+### GET a product
+GET http://localhost:3000/products/eba04dbc-5ebb-41d4-ad93-2bf394035a69
+
+### Update a product
+PUT http://localhost:3000/api/products/d0ec191d-9568-4c8a-ae72-c86193818679
+Content-Type: application/json
+
+
+{
+    "quantity": 99
+
+
+  }
+
+### Delete a product
+DELETE  http://localhost:3000/api/products/23eb08e4-f831-440f-82de-5693531bd37c
+Content-Type: application/json

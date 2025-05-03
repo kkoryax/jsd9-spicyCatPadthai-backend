@@ -1,4 +1,4 @@
-import {orderDetail} from "../../models/OrderDetail.js";
+import {OrderDetail} from "../../models/OrderDetail.js";
 
 export const createOrderDetail = async(req, res) => {
     const {quantity, price} = req.body
