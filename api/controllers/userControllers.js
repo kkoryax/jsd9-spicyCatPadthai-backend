@@ -1,12 +1,13 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../../models/User.js";
+import {Country} from '../../models/Country.js';
 
 
 //Get all users controller
 export const getAllUsers = async(req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().populate('city_id');
         res.json({
             error: false,
             users
@@ -24,7 +25,7 @@ export const getAllUsers = async(req, res) => {
 //Get user by Id Controller
 export const GetUserById = async (req,res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).populate('city_id').populate('city_id.country_id');
         if (!user) {
             return res.status(404).json({
                 error: true,
@@ -51,11 +52,10 @@ export const registerUser = async(req, res) => {
         lastName,
         dateOfBirth,
         address,
-        city,
-        country,
+        city_id,
         phoneNumber
     } = req.body
-    if(!email || !password || !name || !lastName || !dateOfBirth || !address || !city || !country || !phoneNumber) {
+    if(!email || !password || !name || !lastName || !dateOfBirth || !address || !city_id || !phoneNumber) {
         return res.status(400).json({
             error: true,
             message: "All fields are required",
@@ -76,8 +76,7 @@ export const registerUser = async(req, res) => {
             lastName,
             dateOfBirth,
             address,
-            city,
-            country,
+            city_id,
             phoneNumber
         });
         await user.save();
@@ -149,11 +148,23 @@ export const loginUser = async (req, res) => {
 //Update user controller
 export const updateUser = async (req,res) => {
     try{
-        if (req.body.password) {
-            const salt = await bcrypt.genSalt(10);
-            req.body.password = await bcrypt.hash(req.body.password, salt);
-        }
+        // if (req.body.password) {
+        //     const salt = await bcrypt.genSalt(10);
+        //     req.body.password = await bcrypt.hash(req.body.password, salt);
+        // }
 
+        const updateData = { ...req.body };
+
+        if (updateData.password) {
+          const salt = await bcrypt.genSalt(10);
+          updateData.password = await bcrypt.hash(updateData.password, salt);
+        }
+    
+        if (updateData.cityName) {
+          updateData["city_id.name"] = updateData.cityName;
+          delete updateData.cityName;
+        }
+        
 
         const updatedUser  = await User.findByIdAndUpdate(
             req.params.id,
@@ -257,3 +268,20 @@ export const deleteUser = async (req,res) => {
         });
     }
 }
+
+
+// get country controller
+
+
+export const getAllCountries = async (req, res) => {
+    try {
+        const countries = await Country.find(); // ดึงข้อมูลทั้งหมด
+        res.json(countries);
+    } catch (err) {
+        res.status(500).json({
+            error: true,
+            message: "Failed to fetch countries",
+            details: err.message
+        });
+    }
+};
