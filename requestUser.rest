@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 ### Get user by Id
-GET http://localhost:3000/api/auth/user/6813366885e8a12f2588bbae
+GET http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
 Content-Type: application/json
 
 
@@ -17,11 +17,10 @@ Content-Type: application/json
     "email" : "Hellofortestpassword@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "waipana",
+    "lastName": "testpassword",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
-    "city": "Bangkok",
-    "country": "Thailand",
+    "city_id": "68166dd9aa6c394d5a876c8e",
     "phoneNumber": "091-234-5679"
 }
 
@@ -34,7 +33,7 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestpassword2@example.com",
+    "email" : "Hellofortestpassword@example.com",
     "password": "katsubook"
 }
 
@@ -42,7 +41,7 @@ Content-Type: application/json
 
 
 ### Update a user (some fields)
-PATCH  http://localhost:3000/api/auth/user/68133c3d8e58fa3222fb7ad4
+PATCH  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
 Content-Type: application/json
 
 
@@ -50,12 +49,13 @@ Content-Type: application/json
     "email" : "Hellofortestpassword2@example.com",
     "name": "KatsuOKmak",
     "lastName": "waipana",
-    "dateOfBirth": "1999-02-03"
+    "dateOfBirth": "1999-02-03",
+    "cityName": "Chiang Mai"
 }
 
 
 ### Update a user (all fields)
-PUT  http://localhost:3000/api/auth/user/680cff052a2d69dd87cb4024
+PUT  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
 Content-Type: application/json
 
 
@@ -86,6 +86,9 @@ DELETE  http://localhost:3000/api/auth/user/681339109c200d2466674754
 Content-Type: application/json
 
 
+### Get all country
+GET  http://localhost:3000/api/auth/country
+Content-Type: application/json
 
 
 

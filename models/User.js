@@ -1,5 +1,9 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
+import { City } from "./City.js";
+
+
 
 const UserSchema = new Schema({
   name: { type: String },
@@ -13,7 +17,6 @@ const UserSchema = new Schema({
     ref: "City",
     required: true,
   },
-  country: { type: String },
   phoneNumber: { type: String },
   createdOn: { type: Date, default: new Date().getTime() },
 });

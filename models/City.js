@@ -1,4 +1,6 @@
-import mongoose,{Schema,model} from "mongoose"
+import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+
 
 const citySchema = new Schema({
   name: {
@@ -12,5 +14,5 @@ const citySchema = new Schema({
   },
 });
 
-export const City = model("City", citySchema);
 
+export const City = model("City", citySchema);

@@ -1,10 +1,13 @@
-import 
 import mongoose from "mongoose";
-const countrySchema = new mongoose.Schema({
+import { Schema, model } from "mongoose";
+
+
+const CountrySchema = new Schema({
   name: {
     type: String,
     required: true,
   },
 });
 
-export const Country = mongoose.model("Country", countrySchema);
+
+export const Country = mongoose.model("Country", CountrySchema);
