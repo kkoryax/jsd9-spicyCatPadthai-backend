@@ -2,15 +2,19 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../../models/User.js";
 import { Country } from "../../models/Country.js";
+import { City } from "../../models/City.js";
 
 //Get all users controller
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().populate("city_id");
-    res.json({
-      error: false,
-      users,
-    });
+    const users = await User.find().populate({
+        path: "city_id",
+        populate: {
+          path: "country_id", // ชื่อ Field ใน Schema ของ City ที่อ้างอิงไปยัง Country
+          model: "Country", // ชื่อ Model ของ Country (ตรวจสอบให้ถูกต้องตามที่คุณตั้งไว้)
+        },
+      })
+      res.json(users);
   } catch (err) {
     res.status(500).json({
       error: true,
@@ -26,8 +30,8 @@ export const GetUserById = async (req, res) => {
     const user = await User.findById(req.params.id).populate({
       path: "city_id",
       populate: {
-        path: "country_id", // ชื่อ Field ใน Schema ของ City ที่อ้างอิงไปยัง Country
-        model: "Country", // ชื่อ Model ของ Country (ตรวจสอบให้ถูกต้องตามที่คุณตั้งไว้)
+        path: "country_id",
+        model: "Country",
       },
     });
     if (!user) {
@@ -165,13 +169,24 @@ export const updateUser = async (req, res) => {
     }
 
     if (updateData.cityName) {
-      updateData["city_id.name"] = updateData.cityName;
-      delete updateData.cityName;
-    }
+        const city = await City.findOne({ name: updateData.cityName });
+        console.log('City found:', city);
+        
+        if (city) {
+          updateData.city_id = city._id;  // Set city_id to the ObjectId of the city
+          console.log('City ID to be updated:', updateData.city_id);
+          delete updateData.cityName;     // Remove cityName from the update data
+        } else {
+          return res.status(400).json({
+            error: true,
+            message: "City not found",
+          });
+        }
+      }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: updateData },
       { new: true, runValidators: true }
     );
 
@@ -269,7 +284,7 @@ export const deleteUser = async (req, res) => {
 
 export const getAllCountries = async (req, res) => {
   try {
-    const countries = await Country.find(); // ดึงข้อมูลทั้งหมด
+    const countries = await Country.find(); 
     res.json(countries);
   } catch (err) {
     res.status(500).json({
@@ -279,3 +294,20 @@ export const getAllCountries = async (req, res) => {
     });
   }
 };
+
+
+// get city controller
+
+export const getAllCities = async (req, res) => {
+    try {
+      const cities = await City.find(); 
+      res.json(cities);
+    } catch (err) {
+      res.status(500).json({
+        error: true,
+        message: "Failed to fetch countries",
+        details: err.message,
+      });
+    }
+  };
+  
