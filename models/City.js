@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { Schema, model } from "mongoose";
 
-
-const citySchema = new Schema({
+const CitySchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -15,4 +14,4 @@ const citySchema = new Schema({
 });
 
 
-export const City = model("City", citySchema);
+export const City = model("City", CitySchema);

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import mongoose,{ Schema, model } from "mongoose";
 
 const AuthorSchema = new Schema({
   author_name: { type: String, required: true },

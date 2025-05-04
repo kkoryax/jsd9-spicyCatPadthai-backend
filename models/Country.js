@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import { Schema, model } from "mongoose";
-
 
 const CountrySchema = new Schema({
   name: {
@@ -9,5 +7,4 @@ const CountrySchema = new Schema({
   },
 });
 
-
-export const Country = mongoose.model("Country", CountrySchema);
+export const Country = model("Country", CountrySchema);
