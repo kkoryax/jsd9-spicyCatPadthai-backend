@@ -1,19 +1,16 @@
-const mongoose = require("mongoose");
+import mongoose,{Schema,model} from "mongoose"
 
-
-// Schema สำหรับตาราง City
-const citySchema = new mongoose.Schema({
+const citySchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  country: {
+  country_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Country",
     required: true,
   },
 });
 
-// Model สำหรับตาราง City
-export const City = mongoose.model("City", citySchema);
+export const City = model("City", citySchema);
 
