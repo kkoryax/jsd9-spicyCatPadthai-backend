@@ -25,15 +25,13 @@ Content-Type: application/json
 }
 
 
-
-
 ### login
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestroute@example.com",
+    "email" : "Hellofortestupdatecity1@example.com",
     "password": "katsubook"
 }
 
@@ -50,7 +48,7 @@ Content-Type: application/json
     "name": "Katsu",
     "lastName": "updatecity",
     "dateOfBirth": "1999-02-03",
-    "cityName": "Chiang Mai"
+    "cityName": "Chiang Rai"
 }
 
 

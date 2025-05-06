@@ -170,11 +170,9 @@ export const updateUser = async (req, res) => {
 
     if (updateData.cityName) {
         const city = await City.findOne({ name: updateData.cityName });
-        console.log('City found:', city);
         
         if (city) {
           updateData.city_id = city._id;  // Set city_id to the ObjectId of the city
-          console.log('City ID to be updated:', updateData.city_id);
           delete updateData.cityName;     // Remove cityName from the update data
         } else {
           return res.status(400).json({
@@ -240,7 +238,6 @@ export const updateUserPassword = async (req, res) => {
     // Assign the plain text new password. The pre('save') hook in User.js will handle hashing.
     user.password = newPassword;
     await user.save();
-    console.log("New password saved:", user.password);
 
     res.status(200).json({
       error: false,
