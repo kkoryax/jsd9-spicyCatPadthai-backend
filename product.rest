@@ -3,16 +3,19 @@ GET http://localhost:3000/products
 
 
 ### Create a product
-POST http://localhost:3000/api/products
+POST http://localhost:3000/products
 Content-Type: application/json
 
-{
-    "name_vol": "การหายตัวไป",
-    "volume_no": "29",
-    "description": "โดยมีเงื่อนงำซ่อนอยู่ในความทรงจำ",
-    "price": 120
+ {
+    "name_vol": "Dragon's Shadow Ascendant - Vol. 5: The Final Stand",
+    "volume_no": "5",
+    "description": "The epic conclusion to the saga.",
+    "price": 35.00,
+    "quantity": 150,
+    "title_id": "6814725661fa18a1c47ce5a9",
+    "author_id": "6814660761fa18a1c47ce560",
+    "product_status": "available"
   }
-
 ### GET a product
 GET http://localhost:3000/products/eba04dbc-5ebb-41d4-ad93-2bf394035a69
 

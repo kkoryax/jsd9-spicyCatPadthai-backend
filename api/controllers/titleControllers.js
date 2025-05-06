@@ -104,3 +104,20 @@ export const deleteTitle = async(req, res) => {
         });
     }
 };
+export const getTitleById = async (req, res) => {
+  try {
+    const { titleId } = req.params;
+
+    const title = await Title.findOne({ _id: titleId });
+
+    if (!title) {
+      return res.status(404).json({ message: 'Title with this ID not found' });
+    }
+
+    res.status(200).json(title);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching Title data' });
+  }
+};

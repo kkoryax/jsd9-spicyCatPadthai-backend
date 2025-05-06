@@ -1,11 +1,11 @@
 import mongoose,{ Schema, model } from "mongoose";
 
-const ProductSchema = new Schema({
+export const ProductSchema = new Schema({
   name_vol: { type: String, required: true, unique: true },
   volume_no: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  quantity: { type: Number, default: 1 },
+  quantity: { type: Number},
   title_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Title",
@@ -16,6 +16,7 @@ const ProductSchema = new Schema({
     ref: "Author",
     required: true,
   },
+
   //   picture: { type: String },
   product_status: {
     type: String,
