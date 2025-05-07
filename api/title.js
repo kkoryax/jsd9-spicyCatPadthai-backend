@@ -16,7 +16,9 @@ router.get("/titles/search", searchTitle);
 router.delete("/titles/:titleId", deleteTitle);
 
 //Update title
-router.put("/titles/:id", updateTitle);
+router.put("/titles/:titleId", updateTitle);
 
+//Get title by id
 router.get("/titles/:titleId", getTitleById)
+
 export default router;

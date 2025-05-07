@@ -1,0 +1,33 @@
+### Get all titles
+GET http://localhost:3000/api/titles/get-all
+Content-Type: application/json
+
+###Create new title
+POST http://localhost:3000/api/titles/create
+Content-Type: application/json
+
+{
+    "title_name": "tungtungsahur",
+    "title_description": "tungtungsahur",
+    "author_id": "6814660761fa18a1c47ce55e",
+    "title_picture": ""
+}
+
+###Update title
+PUT http://localhost:3000/api/titles/681adda55212aabd7d60dc7b
+Content-Type: application/json
+
+{
+    "title_name": "test_updated_v3",
+    "title_description": "tungtungsahur_v3",
+    "author_id": "6814660761fa18a1c47ce55e",
+    "title_picture": ""
+}
+
+###Delete title
+DELETE http://localhost:3000/api/titles/681b09bd6e3a95c82a97371f
+Content-Type: application/json
+
+###GET title by id
+GET http://localhost:3000/api/titles/681adda55212aabd7d60dc7b
+Content-Type: application/json

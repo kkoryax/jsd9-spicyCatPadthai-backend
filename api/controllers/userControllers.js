@@ -91,7 +91,7 @@ export const registerUser = async (req, res) => {
     if (!city) {
       return res.status(400).json({
         error: true,
-        message: "City not found. Please resigter with a valid city name.",
+        message: "City not found. Please register with a valid city name.",
       });
     }
 

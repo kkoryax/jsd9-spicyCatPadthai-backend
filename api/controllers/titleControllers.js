@@ -1,4 +1,5 @@
 import { Title } from "../../models/Title.js"
+import { Types } from "mongoose";
 
 //GET all titles
 export const getAllTitles = async(req, res) => {
@@ -47,14 +48,14 @@ export const searchTitle = async(req, res) => {
 
  //CREATE new title
  export const createNewTitle = async(req, res) => {
-    const { title_name, description, author_id } = req.body
+    const { title_name, title_description, author_id } = req.body
     if(!title_name) {
         return res.status(400).json({
             error: true,
             message: "Title names are required"
         });
     }
-    if(!description) {
+    if(!title_description) {
         return res.status(400).json({
             error: true,
             message: "Description names are required"
@@ -69,7 +70,7 @@ export const searchTitle = async(req, res) => {
     try {
         const title = new Title ({
             title_name,
-            description,
+            title_description,
             author_id
         });
         await title.save();
@@ -88,27 +89,29 @@ export const searchTitle = async(req, res) => {
 
 //Update title by ID
 export const updateTitle = async(req, res) => {
-    const { _id } = req.params;
-    const { title_name, description, author_id } = req.body
+    const { titleId } = req.params;
+    const { title_name, title_description, author_id } = req.body
 
     try {
         const title = await Title.findOneAndUpdate(
-            {_id: req.params.titleId},
-            {$set: {title_name, description, author_id}}
+            {_id: titleId},
+            {$set: {title_name, title_description, author_id}}
         );
         if (!title) {
             return res.status(404).json({
                 error: true,
                 message: "Title not found",
-                details: err.message
             });
         }
+        res.status(200).json({
+            error: false,
+            message: "Title updated successful"
+        })
     } catch (err) {
         console.error(err);
         res.status(500).json({
             error: true,
             message: "Internal Server Error",
-            details: err.message
         });
     }
 };
