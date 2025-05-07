@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllTitles, createNewTitle, searchTitle, deleteTitle, getTitleById} from "./controllers/titleControllers.js";
+import { getAllTitles, createNewTitle, searchTitle, deleteTitle, getTitleById, updateTitle} from "./controllers/titleControllers.js";
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get("/titles/search", searchTitle);
 router.delete("/titles/:titleId", deleteTitle);
 
 //Update title
-// router.put("/titles/:id");
+router.put("/titles/:id", updateTitle);
 
 router.get("/titles/:titleId", getTitleById)
 export default router;
