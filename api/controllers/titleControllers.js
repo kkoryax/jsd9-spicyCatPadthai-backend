@@ -48,10 +48,22 @@ export const searchTitle = async(req, res) => {
  //CREATE new title
  export const createNewTitle = async(req, res) => {
     const { title_name, description, author_id } = req.body
-    if(!title_name || !description || !author_id) {
+    if(!title_name) {
         return res.status(400).json({
             error: true,
-            message: "All fields are required"
+            message: "Title names are required"
+        });
+    }
+    if(!description) {
+        return res.status(400).json({
+            error: true,
+            message: "Description names are required"
+        });
+    }
+    if(!author_id) {
+        return res.status(400).json({
+            error: true,
+            message: "Author ID are required"
         });
     }
     try {
@@ -74,14 +86,32 @@ export const searchTitle = async(req, res) => {
     }
 };
 
-//Update title
+//Update title by ID
 export const updateTitle = async(req, res) => {
+    const { _id } = req.params;
+    const { title_name, description, author_id } = req.body
+
     try {
-
+        const title = await Title.findOneAndUpdate(
+            {_id: req.params.titleId},
+            {$set: {title_name, description, author_id}}
+        );
+        if (!title) {
+            return res.status(404).json({
+                error: true,
+                message: "Title not found",
+                details: err.message
+            });
+        }
     } catch (err) {
-
+        console.error(err);
+        res.status(500).json({
+            error: true,
+            message: "Internal Server Error",
+            details: err.message
+        });
     }
-}
+};
 
 //DELETE title
 export const deleteTitle = async(req, res) => {
@@ -104,6 +134,8 @@ export const deleteTitle = async(req, res) => {
         });
     }
 };
+
+//Get TitleById
 export const getTitleById = async (req, res) => {
   try {
     const { titleId } = req.params;
