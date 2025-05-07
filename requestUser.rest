@@ -14,13 +14,13 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestroute@example.com",
+    "email" : "Helloforresgitertest@example.com",
     "password": "katsubook",
     "name": "Katsu",
     "lastName": "testroute",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
-    "city_id": "68166dd9aa6c394d5a876c8e",
+    "cityName": "Chiang Mai",
     "phoneNumber": "091-234-5679"
 }
 
@@ -80,7 +80,7 @@ Content-Type: application/json
 
 
 ### Delete a user
-DELETE  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
+DELETE  http://localhost:3000/api/auth/user/681ae4ac2d20f32936f1526b
 Content-Type: application/json
 
 
