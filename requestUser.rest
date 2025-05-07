@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 ### Get user by Id
-GET http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
+GET http://localhost:3000/api/auth/user/681738e830fcf924006f4a45
 Content-Type: application/json
 
 
@@ -14,17 +14,15 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestpassword@example.com",
+    "email" : "Hellofortestroute@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "testpassword",
+    "lastName": "testroute",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
     "city_id": "68166dd9aa6c394d5a876c8e",
     "phoneNumber": "091-234-5679"
 }
-
-
 
 
 ### login
@@ -33,7 +31,7 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestpassword@example.com",
+    "email" : "Hellofortestupdatecity1@example.com",
     "password": "katsubook"
 }
 
@@ -41,16 +39,16 @@ Content-Type: application/json
 
 
 ### Update a user (some fields)
-PATCH  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
+PATCH  http://localhost:3000/api/auth/user/681738e830fcf924006f4a45
 Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestpassword2@example.com",
-    "name": "KatsuOKmak",
-    "lastName": "waipana",
+    "email" : "Hellofortestupdatecity1@example.com",
+    "name": "Katsu",
+    "lastName": "updatecity",
     "dateOfBirth": "1999-02-03",
-    "cityName": "Chiang Mai"
+    "cityName": "Chiang Rai"
 }
 
 
@@ -72,7 +70,7 @@ Content-Type: application/json
 }
 
 ### Update Password
-PATCH  http://localhost:3000/api/auth/user/68133c3d8e58fa3222fb7ad4/password
+PATCH  http://localhost:3000/api/auth/user/681738e830fcf924006f4a45/password
 Content-Type: application/json
 
 {
@@ -82,12 +80,18 @@ Content-Type: application/json
 
 
 ### Delete a user
-DELETE  http://localhost:3000/api/auth/user/681339109c200d2466674754
+DELETE  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
 Content-Type: application/json
 
 
 ### Get all country
 GET  http://localhost:3000/api/auth/country
+Content-Type: application/json
+
+
+
+### Get all city
+GET  http://localhost:3000/api/auth/city
 Content-Type: application/json
 
 

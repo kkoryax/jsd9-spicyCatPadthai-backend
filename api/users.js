@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, GetUserById, registerUser, loginUser, updateUser, updateUserPassword, deleteUser, getAllCountries} from "./controllers/userControllers.js";
+import { getAllUsers, GetUserById, registerUser, loginUser, updateUser, updateUserPassword, deleteUser, getAllCountries, getAllCities} from "./controllers/userControllers.js";
 
 
 const router = express.Router();
@@ -36,5 +36,8 @@ router.delete("/auth/user/:id", deleteUser);
 
 //Get country
 router.get("/auth/country", getAllCountries);
+
+//Get city
+router.get("/auth/city", getAllCities);
 
 export default router;
