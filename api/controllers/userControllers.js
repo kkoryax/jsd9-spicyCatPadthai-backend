@@ -60,6 +60,7 @@ export const registerUser = async (req, res) => {
     dateOfBirth,
     address,
     city_id,
+    cityName,
     phoneNumber,
   } = req.body;
   if (
@@ -69,7 +70,7 @@ export const registerUser = async (req, res) => {
     !lastName ||
     !dateOfBirth ||
     !address ||
-    !city_id ||
+    !cityName ||
     !phoneNumber
   ) {
     return res.status(400).json({
@@ -85,6 +86,15 @@ export const registerUser = async (req, res) => {
         message: "Email already in use",
       });
     }
+
+    const city = await City.findOne({ name: cityName });
+    if (!city) {
+      return res.status(400).json({
+        error: true,
+        message: "City not found. Please resigter with a valid city name.",
+      });
+    }
+
     const user = new User({
       email,
       password,
@@ -93,6 +103,7 @@ export const registerUser = async (req, res) => {
       dateOfBirth,
       address,
       city_id,
+      city_id: city._id,
       phoneNumber,
     });
     await user.save();
