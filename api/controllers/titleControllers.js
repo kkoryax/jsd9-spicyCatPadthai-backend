@@ -1,4 +1,5 @@
 import { Title } from "../../models/Title.js"
+import { Types } from "mongoose";
 
 //GET all titles
 export const getAllTitles = async(req, res) => {
@@ -29,12 +30,12 @@ export const searchTitle = async(req, res) => {
     try {
         const matchingTitle = await Title.find({
             $or: [
-                {name: {$regex: new RegExp(query, "i")}}
+                {title_name: {$regex: new RegExp(query, "i")}}
             ]
         });
         res.json({
             error: false,
-            titles: matchingTitle,
+            title_name: matchingTitle,
             message: "Matching title via search query retrieve successful"
         })
     } catch (err) {
@@ -47,17 +48,30 @@ export const searchTitle = async(req, res) => {
 
  //CREATE new title
  export const createNewTitle = async(req, res) => {
-    const { name, description } = req.body
-    if(!name || !description) {
+    const { title_name, title_description, author_id } = req.body
+    if(!title_name) {
         return res.status(400).json({
             error: true,
-            message: "All fields are required"
+            message: "Title names are required"
+        });
+    }
+    if(!title_description) {
+        return res.status(400).json({
+            error: true,
+            message: "Description names are required"
+        });
+    }
+    if(!author_id) {
+        return res.status(400).json({
+            error: true,
+            message: "Author ID are required"
         });
     }
     try {
         const title = new Title ({
-            name,
-            description
+            title_name,
+            title_description,
+            author_id
         });
         await title.save();
 
@@ -73,14 +87,34 @@ export const searchTitle = async(req, res) => {
     }
 };
 
-//Update title
+//Update title by ID
 export const updateTitle = async(req, res) => {
+    const { titleId } = req.params;
+    const { title_name, title_description, author_id } = req.body
+
     try {
-
+        const title = await Title.findOneAndUpdate(
+            {_id: titleId},
+            {$set: {title_name, title_description, author_id}}
+        );
+        if (!title) {
+            return res.status(404).json({
+                error: true,
+                message: "Title not found",
+            });
+        }
+        res.status(200).json({
+            error: false,
+            message: "Title updated successful"
+        })
     } catch (err) {
-
+        console.error(err);
+        res.status(500).json({
+            error: true,
+            message: "Internal Server Error",
+        });
     }
-}
+};
 
 //DELETE title
 export const deleteTitle = async(req, res) => {
@@ -102,4 +136,23 @@ export const deleteTitle = async(req, res) => {
             details: err.message
         });
     }
+};
+
+//Get TitleById
+export const getTitleById = async (req, res) => {
+  try {
+    const { titleId } = req.params;
+
+    const title = await Title.findOne({ _id: titleId });
+
+    if (!title) {
+      return res.status(404).json({ message: 'Title with this ID not found' });
+    }
+
+    res.status(200).json(title);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching Title data' });
+  }
 };

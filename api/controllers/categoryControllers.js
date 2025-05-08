@@ -29,7 +29,7 @@ export const searchCategory = async(req, res) => {
     try {
         const matchingCategory = await Category.find({
             $or: [
-                {name: {$regex: new RegExp(query, "i")}}
+                {category_name: {$regex: new RegExp(query, "i")}}
             ]
         });
         res.json({
@@ -47,15 +47,15 @@ export const searchCategory = async(req, res) => {
 
 //CREATE category
  export const createCategory = async(req, res) => {
-    const { name } = req.body
-    if(!name) {
+    const { category_name } = req.body
+    if(!category_name) {
         return res.status(400).json({
             error: true,
             message: "All fields are required"
         });
     }
     try {
-        const existingCategory = await Category.findOne({name})
+        const existingCategory = await Category.findOne({category_name})
         if (existingCategory) {
             return res.status(409).json({
                 error: true,
@@ -63,7 +63,7 @@ export const searchCategory = async(req, res) => {
             });
         }
         const category = new Category ({
-            name
+            category_name
         });
         await category.save();
 

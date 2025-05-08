@@ -14,13 +14,13 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestregistercity2@example.com",
+    "email" : "Helloforresgitertest@example.com",
     "password": "katsubook",
     "name": "Katsu",
     "lastName": "testroute",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
-    "city_id": "68174160b61d567b525f6d81",
+    "cityName": "Chiang Mai",
     "phoneNumber": "091-234-5679"
 }
 
@@ -48,26 +48,26 @@ Content-Type: application/json
     "name": "Katsu",
     "lastName": "updatecity",
     "dateOfBirth": "1999-02-03",
-    "city_id": "68174160b61d567b525f6d5c"
+    "cityName": "Chiang Rai"
 }
 
 
 ### Update a user (all fields)
-# PUT  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
-# Content-Type: application/json
+PUT  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
+Content-Type: application/json
 
 
-# {
-#     "email" : "Hellofordelete@example.com",
-#     "password": "katsubook",
-#     "name": "Katsuokmakmak",
-#     "lastName": "waipana",
-#     "dateOfBirth": "1999-02-02",
-#     "address": "11/111 KFC Hungry Hungry",
-#     "city": "Bangkok",
-#     "country": "Thailand",
-#     "phoneNumber": "091-234-5679"
-# }
+{
+    "email" : "Hellofordelete@example.com",
+    "password": "katsubook",
+    "name": "Katsuokmakmak",
+    "lastName": "waipana",
+    "dateOfBirth": "1999-02-02",
+    "address": "11/111 KFC Hungry Hungry",
+    "city": "Bangkok",
+    "country": "Thailand",
+    "phoneNumber": "091-234-5679"
+}
 
 ### Update Password
 PATCH  http://localhost:3000/api/auth/user/681738e830fcf924006f4a45/password
@@ -92,11 +92,6 @@ Content-Type: application/json
 
 ### Get all city
 GET  http://localhost:3000/api/auth/city
-Content-Type: application/json
-
-
-### Get city by country id
-GET  http://localhost:3000/api/auth/country/681b0ab2194607ca70d57fe5/cities
 Content-Type: application/json
 
 

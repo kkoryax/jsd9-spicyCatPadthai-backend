@@ -1,0 +1,7 @@
+POST http://localhost:3000/api/pdc
+Content-Type: application/json
+
+ {
+   "title_id":"6814725661fa18a1c47ce5a9",
+   "category_id":"680f2a63854cdd87555bb4f2"
+  }

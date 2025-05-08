@@ -1,7 +1,30 @@
 import express from "express";
+import {
+  getProductById,
+  deleteProductById,
+  updateProductById,
+  createProduct,
+  getAllProducts,
+  getAllProductById,
+} from "./controllers/productController.js";
 
 const router = express.Router();
 
-export default(db) => {
-    return router;
-}
+// GET all products
+router.get("/products", getAllProducts);
+
+// GET product by id
+router.get("/products/:_id", getProductById);
+
+// Create a product
+router.post("/products", createProduct);
+
+// Update product
+router.put("/products/:_id", updateProductById);
+
+// Delete product
+router.delete("/products/:_id", deleteProductById);
+
+router.get("/productss/:title_id", getAllProductById)
+
+export default router;
