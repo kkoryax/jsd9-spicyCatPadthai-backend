@@ -4,7 +4,8 @@ import productRoute from "../api/products.js";
 import authorRoute from "../api/authors.js";
 import titleRoute from "../api/title.js";
 import categoryRoute from "../api/category.js";
-import pdcRoute from "../api/productCategory.js"
+import pdcRoute from "../api/productCategory.js";
+import orderRoute from "../api/orders.js";
 const router = express.Router();
 
 export default () => {
@@ -13,7 +14,8 @@ export default () => {
   router.use("/api", categoryRoute);
   router.use("/", productRoute);
   router.use("/admin", authorRoute);
-  router.use("/api", pdcRoute)
+  router.use("/api", pdcRoute);
+  router.use("/api", orderRoute);
 
   return router;
 };

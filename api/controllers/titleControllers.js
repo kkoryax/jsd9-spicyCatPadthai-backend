@@ -1,9 +1,10 @@
+import { Types } from "mongoose";
 import { Title } from "../../models/Title.js"
 
 //GET all titles
 export const getAllTitles = async(req, res) => {
     try {
-        const title = await Title.find();
+        const title = await Title.find().populate('author_id');
         res.json({
             error: false,
             title
@@ -108,7 +109,7 @@ export const getTitleById = async (req, res) => {
   try {
     const { titleId } = req.params;
 
-    const title = await Title.findOne({ _id: titleId });
+    const title = await Title.findOne({ _id: new Types.ObjectId(titleId) });
 
     if (!title) {
       return res.status(404).json({ message: 'Title with this ID not found' });
