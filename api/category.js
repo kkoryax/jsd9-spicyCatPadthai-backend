@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllCategory, searchCategory, createCategory } from "./controllers/categoryControllers.js";
+import { getAllCategory, searchCategory, createCategory, deleteCategory, getCategoryById } from "./controllers/categoryControllers.js";
 
 const router = express.Router();
 
@@ -13,7 +13,10 @@ router.get("/category/search", searchCategory);
 router.post("/category/create", createCategory);
 
 //DELETE category
-/* router.delete("/category/:id"); */
+router.delete("/category/:categoryId", deleteCategory);
+
+//Get Category by Id
+router.get("/category/:categoryId", getCategoryById)
 
 //Update category
 /* router.put("/category/:id"); */

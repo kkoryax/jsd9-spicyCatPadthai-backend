@@ -10,7 +10,7 @@ Content-Type: application/json
     "title_name": "tungtungsahur",
     "title_description": "tungtungsahur",
     "author_id": "6814660761fa18a1c47ce55e",
-    "title_picture": ""
+    "title_picture": "/assets/6819d659d64cf3a576089523.jpg"
 }
 
 ###Update title
@@ -21,7 +21,7 @@ Content-Type: application/json
     "title_name": "test_updated_v3",
     "title_description": "tungtungsahur_v3",
     "author_id": "6814660761fa18a1c47ce55e",
-    "title_picture": ""
+    "title_picture": "/assets/6819d659d64cf3a576089523.jpg"
 }
 
 ###Delete title
