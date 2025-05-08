@@ -4,7 +4,7 @@ import { Types } from "mongoose";
 //GET all titles
 export const getAllTitles = async(req, res) => {
     try {
-        const title = await Title.find();
+        const title = await Title.find().populate('author_id');
         res.json({
             error: false,
             title
@@ -19,25 +19,74 @@ export const getAllTitles = async(req, res) => {
 };
 
 //GET title by search query
-export const searchTitle = async(req, res) => {
-    const { query } = req.query
+// export const searchTitle = async(req, res) => {
+//     const { query } = req.query
+//     if (!query) {
+//         res.status(400).json({
+//             error: true,
+//             message: "Search query is required"
+//         });
+//     }
+//     try {
+//         const matchingTitle = await Title.find({
+//             $or: [
+//                 {title_name: {$regex: new RegExp(query, "i")}},
+//                 {title_description: {$regex: new RegExp(query, "i")}}
+//             ]
+//         });
+//         res.json({
+//             error: false,
+//             title_name: matchingTitle,
+//             message: "Matching title via search query retrieve successful"
+//         })
+//     } catch (err) {
+//         res.status(500).json({
+//             error: true,
+//             message: "Internal Server Error"
+//         });
+//     }
+// };
+
+//GET title by search query (title, description, author)
+export const searchTitle = async (req, res) => {
+    const { query } = req.query;
+
     if (!query) {
-        res.status(400).json({
+        return res.status(400).json({
             error: true,
             message: "Search query is required"
         });
     }
+
     try {
-        const matchingTitle = await Title.find({
-            $or: [
-                {title_name: {$regex: new RegExp(query, "i")}}
-            ]
-        });
+        const matchingTitle = await Title.aggregate([
+            {
+                $lookup: {
+                    from: "authors", 
+                    localField: "author_id",
+                    foreignField: "_id",
+                    as: "authorInfo"
+                }
+            },
+            {
+                $unwind: "$authorInfo"
+            },
+            {
+                $match: {
+                    $or: [
+                        { title_name: { $regex: new RegExp(query, "i") } },
+                        { title_description: { $regex: new RegExp(query, "i") } },
+                        { "authorInfo.author_name": { $regex: new RegExp(query, "i") } }
+                    ]
+                }
+            }
+        ]);
+
         res.json({
             error: false,
-            title_name: matchingTitle,
-            message: "Matching title via search query retrieve successful"
-        })
+            data: matchingTitle,
+            message: "Matching titles retrieved successfully"
+        });
     } catch (err) {
         res.status(500).json({
             error: true,
@@ -45,6 +94,7 @@ export const searchTitle = async(req, res) => {
         });
     }
 };
+
 
  //CREATE new title
  export const createNewTitle = async(req, res) => {
