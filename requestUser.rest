@@ -2,55 +2,103 @@
 GET http://localhost:3000/api/auth/get-all-users
 Content-Type: application/json
 
+
+### Get user by Id
+GET http://localhost:3000/api/auth/user/681738e830fcf924006f4a45
+Content-Type: application/json
+
+
 ### Register
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
+
 {
-    "email" : "beta@example.com",
+    "email" : "Hellofortestregistercity2@example.com",
     "password": "katsubook",
     "name": "Katsu",
-    "lastName": "Kun",
-    "dateOfBirth": "1999-01-02",
-    "address": "11/111 KFC Pizza Pizza",
-    "city": "Bangkok",
-    "country": "Thailand",
-    "phoneNumber": "091-234-5678"
+    "lastName": "testroute",
+    "dateOfBirth": "1999-02-02",
+    "address": "11/111 KFC Hungry Hungry",
+    "city_id": "68174160b61d567b525f6d81",
+    "phoneNumber": "091-234-5679"
 }
 
-### GET all title
-GET http://localhost:3000/api/titles/get-all
+
+### login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
-### Register
-POST http://localhost:3000/api/titles/create
+
+{
+    "email" : "Hellofortestupdatecity1@example.com",
+    "password": "katsubook"
+}
+
+
+
+
+### Update a user (some fields)
+PATCH  http://localhost:3000/api/auth/user/681738e830fcf924006f4a45
+Content-Type: application/json
+
+
+{
+    "email" : "Hellofortestupdatecity1@example.com",
+    "name": "Katsu",
+    "lastName": "updatecity",
+    "dateOfBirth": "1999-02-03",
+    "city_id": "68174160b61d567b525f6d5c"
+}
+
+
+### Update a user (all fields)
+# PUT  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
+# Content-Type: application/json
+
+
+# {
+#     "email" : "Hellofordelete@example.com",
+#     "password": "katsubook",
+#     "name": "Katsuokmakmak",
+#     "lastName": "waipana",
+#     "dateOfBirth": "1999-02-02",
+#     "address": "11/111 KFC Hungry Hungry",
+#     "city": "Bangkok",
+#     "country": "Thailand",
+#     "phoneNumber": "091-234-5679"
+# }
+
+### Update Password
+PATCH  http://localhost:3000/api/auth/user/681738e830fcf924006f4a45/password
 Content-Type: application/json
 
 {
-    "name": "sheik",
-    "description": "this is sheik"
+    "currentPassword" : "katsubook12",
+    "newPassword": "katsubook"
 }
 
-### Search title
-GET http://localhost:3000/api/titles/search?query=katsu
+
+### Delete a user
+DELETE  http://localhost:3000/api/auth/user/681ae4ac2d20f32936f1526b
 Content-Type: application/json
 
-###Delete title
-DELETE http://localhost:3000/api/titles/680dd7e3aa1695eb31c293d6
+
+### Get all country
+GET  http://localhost:3000/api/auth/country
 Content-Type: application/json
 
-###Get all category
-GET http://localhost:3000/api/category/get-all
+
+
+### Get all city
+GET  http://localhost:3000/api/auth/city
 Content-Type: application/json
 
-### Search category
-GET http://localhost:3000/api/category/search?query=
+
+### Get city by country id
+GET  http://localhost:3000/api/auth/country/681b0ab2194607ca70d57fe5/cities
 Content-Type: application/json
 
-###Create category
-POST http://localhost:3000/api/category/create
-Content-Type: application/json
 
-{
-    "name": "Survival"
-}
+
+
