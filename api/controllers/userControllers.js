@@ -2,15 +2,19 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../../models/User.js";
 import { Country } from "../../models/Country.js";
+import { City } from "../../models/City.js";
 
 //Get all users controller
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().populate("city_id");
-    res.json({
-      error: false,
-      users,
-    });
+    const users = await User.find().populate({
+        path: "city_id",
+        populate: {
+          path: "country_id", // ชื่อ Field ใน Schema ของ City ที่อ้างอิงไปยัง Country
+          model: "Country", // ชื่อ Model ของ Country (ตรวจสอบให้ถูกต้องตามที่คุณตั้งไว้)
+        },
+      })
+      res.json(users);
   } catch (err) {
     res.status(500).json({
       error: true,
@@ -26,8 +30,8 @@ export const GetUserById = async (req, res) => {
     const user = await User.findById(req.params.id).populate({
       path: "city_id",
       populate: {
-        path: "country_id", // ชื่อ Field ใน Schema ของ City ที่อ้างอิงไปยัง Country
-        model: "Country", // ชื่อ Model ของ Country (ตรวจสอบให้ถูกต้องตามที่คุณตั้งไว้)
+        path: "country_id",
+        model: "Country",
       },
     });
     if (!user) {
@@ -81,6 +85,15 @@ export const registerUser = async (req, res) => {
         message: "Email already in use",
       });
     }
+
+    // const city = await City.findOne({ name: cityName });
+    // if (!city) {
+    //   return res.status(400).json({
+    //     error: true,
+    //     message: "City not found. Please resigter with a valid city name.",
+    //   });
+    // }
+
     const user = new User({
       email,
       password,
@@ -152,11 +165,6 @@ export const loginUser = async (req, res) => {
 //Update user controller
 export const updateUser = async (req, res) => {
   try {
-    // if (req.body.password) {
-    //     const salt = await bcrypt.genSalt(10);
-    //     req.body.password = await bcrypt.hash(req.body.password, salt);
-    // }
-
     const updateData = { ...req.body };
 
     if (updateData.password) {
@@ -164,14 +172,10 @@ export const updateUser = async (req, res) => {
       updateData.password = await bcrypt.hash(updateData.password, salt);
     }
 
-    if (updateData.cityName) {
-      updateData["city_id.name"] = updateData.cityName;
-      delete updateData.cityName;
-    }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: updateData },
       { new: true, runValidators: true }
     );
 
@@ -222,10 +226,8 @@ export const updateUserPassword = async (req, res) => {
         message: "Incorrect current password",
       });
     }
-    // Assign the plain text new password. The pre('save') hook in User.js will handle hashing.
     user.password = newPassword;
     await user.save();
-    console.log("New password saved:", user.password);
 
     res.status(200).json({
       error: false,
@@ -265,16 +267,61 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-// get country controller
+// get all country controller
 
 export const getAllCountries = async (req, res) => {
   try {
-    const countries = await Country.find(); // ดึงข้อมูลทั้งหมด
+    const countries = await Country.find(); 
     res.json(countries);
   } catch (err) {
     res.status(500).json({
       error: true,
       message: "Failed to fetch countries",
+      details: err.message,
+    });
+  }
+};
+
+
+// get all city controller
+
+export const getAllCities = async (req, res) => {
+    try {
+      const cities = await City.find(); 
+      res.json(cities);
+    } catch (err) {
+      res.status(500).json({
+        error: true,
+        message: "Failed to fetch countries",
+        details: err.message,
+      });
+    }
+  };
+
+
+//Get city by country Id Controller
+export const GetCityById = async (req, res) => {
+  try {
+    const { countryId } = req.params;
+    if (!countryId) {
+      return res.status(400).json({
+        error: true,
+        message: "Country ID is required",
+      });
+    }
+
+    const city = await City.find({ country_id: countryId });
+    if (!city) {
+      return res.status(404).json({
+        error: true,
+        message: "city not found",
+      });
+    }
+    res.json(city);
+  } catch (err) {
+    res.status(500).json({
+      error: true,
+      message: "Failed to fetch city",
       details: err.message,
     });
   }
