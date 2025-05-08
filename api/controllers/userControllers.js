@@ -148,6 +148,14 @@ export const loginUser = async (req, res) => {
       expiresIn: "1h",
     });
 
+    res.cookie("accessToken", token, {
+      httpOnly: true,
+      secure: isProd, // only send over HTTPS in prod
+      sameSite: isProd ? "none" : "lax",
+      path: "/",
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+
     res.json({
       error: false,
       token,
