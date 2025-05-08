@@ -1,0 +1,23 @@
+### Get all category
+GET http://localhost:3000/api/category/get-all
+Content-Type: application/json
+
+###Search category
+GET http://localhost:3000/api/category/search?query=Horror
+Content-Type: application/json
+
+###GET category by id
+GET http://localhost:3000/api/category/681cb6d41d1ebd77342c6a9f
+Content-Type: application/json
+
+###Create new category
+POST http://localhost:3000/api/category/create
+Content-Type: application/json
+
+{
+    "category_name": "tungtungsahur"
+}
+
+###Delete category
+DELETE http://localhost:3000/api/category/681cb6d41d1ebd77342c6a9f
+Content-Type: application/json

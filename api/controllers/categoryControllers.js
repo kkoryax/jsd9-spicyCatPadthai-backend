@@ -78,3 +78,49 @@ export const searchCategory = async(req, res) => {
         });
     }
 };
+
+export const deleteCategory = async(req, res) => {
+    const { categoryId } = req.params
+
+    try {
+        const deleteCategory = await Category.findByIdAndDelete(categoryId);
+        if(!deleteCategory) {
+            return res.status(404).json({
+                message: "Category not found"
+            });
+        }
+        res.json({
+            message: "Category deleted successfully"
+        });
+    } catch(err) {
+        res.status(500).json({
+            error: true,
+            message: "Internal Server Error",
+            details: err.message
+        });
+    }
+};
+
+export const getCategoryById = async(req, res) => {
+    const { categoryId } = req.params
+
+    try {
+        const category = await Category.findById(categoryId);
+        if (!category) {
+            return res.status(404).json({
+                message: "Category not found"
+            });
+        }
+        return res.status(200).json({
+            error: false,
+            category,
+            message: "Category retreive successfully!"
+        })
+    } catch (err) {
+        return res.json({
+            error: true,
+            message: "Internal Server Error",
+            details: err.message
+        });
+    }
+};
