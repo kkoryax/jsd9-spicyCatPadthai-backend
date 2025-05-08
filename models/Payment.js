@@ -7,8 +7,17 @@ const PaymentSchema = new Schema({
     required: true,
   },
   amount: { type: Number, required: true },
-  payment_method: { type: String, required: true },
-  payment_status: { type: String, required: true },
+  payment_method: {
+    type: String,
+    enum: ["promptpay", "creditcard"],
+    required: true,
+  },
+  payment_status: {
+    type: String,
+    enum: ["pending", "completed", "failed"],
+    default: "pending",
+    required: true,
+  },
   payment_date: { type: Date, default: new Date().getTime() },
 });
 
