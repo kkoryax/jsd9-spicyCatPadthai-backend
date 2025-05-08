@@ -60,7 +60,6 @@ export const registerUser = async (req, res) => {
     dateOfBirth,
     address,
     city_id,
-    cityName,
     phoneNumber,
   } = req.body;
   if (
@@ -70,7 +69,7 @@ export const registerUser = async (req, res) => {
     !lastName ||
     !dateOfBirth ||
     !address ||
-    !cityName ||
+    !city_id ||
     !phoneNumber
   ) {
     return res.status(400).json({
@@ -87,13 +86,13 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    const city = await City.findOne({ name: cityName });
-    if (!city) {
-      return res.status(400).json({
-        error: true,
-        message: "City not found. Please register with a valid city name.",
-      });
-    }
+    // const city = await City.findOne({ name: cityName });
+    // if (!city) {
+    //   return res.status(400).json({
+    //     error: true,
+    //     message: "City not found. Please resigter with a valid city name.",
+    //   });
+    // }
 
     const user = new User({
       email,
@@ -103,7 +102,6 @@ export const registerUser = async (req, res) => {
       dateOfBirth,
       address,
       city_id,
-      city_id: city._id,
       phoneNumber,
     });
     await user.save();
@@ -167,11 +165,6 @@ export const loginUser = async (req, res) => {
 //Update user controller
 export const updateUser = async (req, res) => {
   try {
-    // if (req.body.password) {
-    //     const salt = await bcrypt.genSalt(10);
-    //     req.body.password = await bcrypt.hash(req.body.password, salt);
-    // }
-
     const updateData = { ...req.body };
 
     if (updateData.password) {
@@ -179,19 +172,6 @@ export const updateUser = async (req, res) => {
       updateData.password = await bcrypt.hash(updateData.password, salt);
     }
 
-    if (updateData.cityName) {
-        const city = await City.findOne({ name: updateData.cityName });
-        
-        if (city) {
-          updateData.city_id = city._id;  // Set city_id to the ObjectId of the city
-          delete updateData.cityName;     // Remove cityName from the update data
-        } else {
-          return res.status(400).json({
-            error: true,
-            message: "City not found",
-          });
-        }
-      }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -246,7 +226,6 @@ export const updateUserPassword = async (req, res) => {
         message: "Incorrect current password",
       });
     }
-    // Assign the plain text new password. The pre('save') hook in User.js will handle hashing.
     user.password = newPassword;
     await user.save();
 
@@ -288,7 +267,7 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-// get country controller
+// get all country controller
 
 export const getAllCountries = async (req, res) => {
   try {
@@ -304,7 +283,7 @@ export const getAllCountries = async (req, res) => {
 };
 
 
-// get city controller
+// get all city controller
 
 export const getAllCities = async (req, res) => {
     try {
@@ -318,4 +297,32 @@ export const getAllCities = async (req, res) => {
       });
     }
   };
-  
+
+
+//Get city by country Id Controller
+export const GetCityById = async (req, res) => {
+  try {
+    const { countryId } = req.params;
+    if (!countryId) {
+      return res.status(400).json({
+        error: true,
+        message: "Country ID is required",
+      });
+    }
+
+    const city = await City.find({ country_id: countryId });
+    if (!city) {
+      return res.status(404).json({
+        error: true,
+        message: "city not found",
+      });
+    }
+    res.json(city);
+  } catch (err) {
+    res.status(500).json({
+      error: true,
+      message: "Failed to fetch city",
+      details: err.message,
+    });
+  }
+};

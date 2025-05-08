@@ -14,13 +14,13 @@ Content-Type: application/json
 
 
 {
-    "email" : "Helloforresgitertest@example.com",
+    "email" : "Hellofortestregistercity@example.com",
     "password": "katsubook",
     "name": "Katsu",
     "lastName": "testroute",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
-    "cityName": "Chiang Mai",
+    "city_id": "68174160b61d567b525f6d81",
     "phoneNumber": "091-234-5679"
 }
 
@@ -48,7 +48,7 @@ Content-Type: application/json
     "name": "Katsu",
     "lastName": "updatecity",
     "dateOfBirth": "1999-02-03",
-    "cityName": "Chiang Rai"
+    "city_id": "68174160b61d567b525f6d5c"
 }
 
 
@@ -92,6 +92,11 @@ Content-Type: application/json
 
 ### Get all city
 GET  http://localhost:3000/api/auth/city
+Content-Type: application/json
+
+
+### Get city by country id
+GET  http://localhost:3000/api/auth/country/681b0ab2194607ca70d57fe5/cities
 Content-Type: application/json
 
 
