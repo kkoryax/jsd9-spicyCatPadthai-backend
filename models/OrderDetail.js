@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const OrderDetailSchema = new Schema({
+    // OrderDetail{_id}
   order_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Order",

@@ -1,6 +1,5 @@
 import { Types } from "mongoose";
 import { Title } from "../../models/Title.js"
-import { Types } from "mongoose";
 
 //GET all titles
 export const getAllTitles = async(req, res) => {
