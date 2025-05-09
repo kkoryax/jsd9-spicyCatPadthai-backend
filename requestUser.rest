@@ -31,8 +31,8 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestupdatecity1@example.com",
-    "password": "katsubook"
+    "email" : "admin@example.com",
+    "password": "admin1234"
 }
 
 

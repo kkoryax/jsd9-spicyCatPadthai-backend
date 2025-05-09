@@ -1,4 +1,5 @@
 import express from "express";
+import { User } from "../models/User.js";
 import { getAllUsers, GetUserById, registerUser, loginUser, updateUser, updateUserPassword, deleteUser, getAllCountries, getAllCities,GetCityById} from "./controllers/userControllers.js";
 
 
