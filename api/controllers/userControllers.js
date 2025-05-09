@@ -148,6 +148,16 @@ export const loginUser = async (req, res) => {
       expiresIn: "1h",
     });
 
+    const isProd = process.env.NODE_ENV === "production";
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: isProd, // only send over HTTPS in prod
+      sameSite: isProd ? "none" : "lax",
+      path: "/",
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+
     res.json({
       error: false,
       token,
