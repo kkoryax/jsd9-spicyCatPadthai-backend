@@ -43,4 +43,19 @@ router.get("/auth/city", getAllCities);
 //Get city by country id
 router.get("/auth/country/:countryId/cities", GetCityById);
 
+//GET Curresnt User profile
+router.get("/auth/profile", async(req, res) => {
+    const user = await User.findById(req.user.user._id).select("-password");
+    if (!user) {
+        return res.status(404).json({
+            error: true,
+            message: "User not found"
+        });
+    }
+    res.status(200).json({
+        error: false,
+        user
+    });
+})
+
 export default router;
