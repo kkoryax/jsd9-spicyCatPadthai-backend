@@ -99,6 +99,7 @@ Content-Type: application/json
 GET  http://localhost:3000/api/auth/country/681b0ab2194607ca70d57fe5/cities
 Content-Type: application/json
 
-
-
-
+###Profile
+GET http://localhost:3000/api/auth/profile
+Content-Type: application/json
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFkNjhiMzQ0MTc4ZTgyYjdjZDkyZDUiLCJpYXQiOjE3NDY3NjU4MzQsImV4cCI6MTc0Njc2OTQzNH0.nrMEmpUP-AJg19jh4f5Oz1yxaXEIbTeZy27nI43pLlc

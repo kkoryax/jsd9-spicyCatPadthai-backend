@@ -150,7 +150,7 @@ export const loginUser = async (req, res) => {
 
     const isProd = process.env.NODE_ENV === "production";
 
-    res.cookie("accessToken", token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: isProd, // only send over HTTPS in prod
       sameSite: isProd ? "none" : "lax",

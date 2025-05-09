@@ -4,12 +4,15 @@ import mongoose from 'mongoose';
 import cors from "cors";
 import apiRoute from "./api/routes.js"
 import limiter from './middleware/limiter.js';
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 
 const PORT = process.env.PORT
+
+app.use(cookieParser());
 
 app.use(cors({
     origin: "http://localhost:5173",
