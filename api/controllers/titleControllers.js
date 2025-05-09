@@ -84,7 +84,7 @@ export const searchTitle = async (req, res) => {
 
         res.json({
             error: false,
-            data: matchingTitle,
+            title: matchingTitle,
             message: "Matching titles retrieved successfully"
         });
     } catch (err) {
