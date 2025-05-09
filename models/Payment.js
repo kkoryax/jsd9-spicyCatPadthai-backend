@@ -10,13 +10,12 @@ const PaymentSchema = new Schema({
   payment_method: {
     type: String,
     enum: ["promptpay", "creditcard"],
-    required: true,
+    default: "promptpay",
   },
   payment_status: {
     type: String,
     enum: ["pending", "completed", "failed"],
     default: "pending",
-    required: true,
   },
   payment_date: { type: Date, default: new Date().getTime() },
 });

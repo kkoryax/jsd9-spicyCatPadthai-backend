@@ -13,7 +13,7 @@ const OrderDetailSchema = new Schema({
     required: true,
   },
   quantity: { type: Number, required: true },
-  price: { type: Number, required: true }, // Price per unit at the time of order
+  subtotal_price: { type: Number, required: true }, // Price per unit at the time of order
 });
 
 export const OrderDetail = model("OrderDetail", OrderDetailSchema);

@@ -10,35 +10,31 @@ export const createOrder = async (req, res) => {
     order_status,
     payment_method,
     payment_status,
-    OrderDetail: order_detail,
+    total_price,
+    items,
   } = req.body;
 
   try {
-    const total_price = order_detail.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-
     const order = new Order({
       user_id,
       total_price,
-      payment_method,
       tracking_number,
       order_status,
     });
     await order.save();
 
-    const orderDetails = [];
-    for (const detail of order_detail) {
-      const orderDetail = new OrderDetail({
+    const orderItems = [];
+    for (const item of items) {
+      const orderItem = {
         order_id: order._id,
-        product_id: detail.product_id,
-        quantity: detail.quantity,
-        price: detail.price,
-      });
-      await orderDetail.save();
-      orderDetails.push(orderDetail);
+        product_id: item.product_id,
+        quantity: item.quantity,
+        subtotal_price: item.subtotal_price,
+      };
+      orderItems.push(orderItem);
     }
+    await OrderDetail.insertMany(orderItems);
+
     const payment = new Payment({
       order_id: order._id,
       amount: order.total_price,
@@ -47,12 +43,12 @@ export const createOrder = async (req, res) => {
       payment_date: new Date(),
     });
     await payment.save();
-
     res.status(201).json({
       error: false,
       message: "Order created successfully",
       order,
-      orderDetails,
+      orderItems,
+      payment
     });
   } catch (err) {
     res.status(500).json({
