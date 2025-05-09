@@ -160,11 +160,17 @@ export const getNewRelease = async(req, res) => {
       twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
       const newRelease = await Product.find(
-        { releaseDate: { $gte: twoWeeksAgo } }, //No releaseDate in Schema rightnow
-        { title: 1, releaseDate: 1 }
+        { releasedDate: { $gte: twoWeeksAgo } }, //No releaseDate in Schema rightnow
+        { title: 1, releasedDate: 1 }
       )
       .sort({ releaseDate: -1 })
       .limit(12);
+
+      res.status(200).json({
+        error: false,
+        newRelease,
+        message: "New released retrieved successfully"
+      })
 
     } catch (err) {
         return res.status(500).json({
