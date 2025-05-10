@@ -48,7 +48,7 @@ export const createOrder = async (req, res) => {
       message: "Order created successfully",
       order,
       orderItems,
-      payment
+      payment,
     });
   } catch (err) {
     res.status(500).json({
@@ -70,7 +70,7 @@ export const getOrderById = async (req, res) => {
       });
     }
     const userDetails = await User.findById(order.user_id)
-      .select("name lastName address city_id country_id")
+      .select("name lastName address city_id country_id phoneNumber")
       .populate({
         path: "city_id",
         select: "name country_id",
@@ -80,9 +80,18 @@ export const getOrderById = async (req, res) => {
         },
       });
 
-    const orderDetails = await OrderDetail.find({ order_id: _id }).populate(
-      "product_id"
-    );
+    // Fetch order details based on the current order's _id
+    const orderDetails = await OrderDetail.find({
+      order_id: order._id, // Corrected from orders.map() to order._id
+    })
+      .populate("order_id")
+      .populate({
+        path: "product_id",
+        populate: [
+          { path: "title_id", model: "Title" },
+          { path: "author_id", model: "Author" },
+        ],
+      });
     const paymentDetails = await Payment.findOne({ order_id: _id }).select(
       "payment_method payment_status"
     );
@@ -132,10 +141,23 @@ export const getOrderByUserId = async (req, res) => {
     }
     const orders = await Order.find({ user_id }).populate("user_id");
 
+    const orderDetails = await OrderDetail.find({
+      order_id: { $in: orders.map((order) => order._id) },
+    })
+      .populate("order_id")
+      .populate({
+        path: "product_id",
+        populate: [
+          { path: "title_id", model: "Title" },
+          { path: "author_id", model: "Author" },
+        ],
+      });
+
     res.json({
       error: false,
       user,
       orders,
+      orderDetails,
     });
   } catch (err) {
     res.status(500).json({
