@@ -14,13 +14,13 @@ Content-Type: application/json
 
 
 {
-    "email" : "Helloforresgitertest@example.com",
+    "email" : "Hellofortestregistercity2@example.com",
     "password": "katsubook",
     "name": "Katsu",
     "lastName": "testroute",
     "dateOfBirth": "1999-02-02",
     "address": "11/111 KFC Hungry Hungry",
-    "cityName": "Chiang Mai",
+    "city_id": "68174160b61d567b525f6d81",
     "phoneNumber": "091-234-5679"
 }
 
@@ -31,8 +31,8 @@ Content-Type: application/json
 
 
 {
-    "email" : "Hellofortestupdatecity1@example.com",
-    "password": "katsubook"
+    "email" : "admin@example.com",
+    "password": "admin1234"
 }
 
 
@@ -48,26 +48,26 @@ Content-Type: application/json
     "name": "Katsu",
     "lastName": "updatecity",
     "dateOfBirth": "1999-02-03",
-    "cityName": "Chiang Rai"
+    "city_id": "68174160b61d567b525f6d5c"
 }
 
 
 ### Update a user (all fields)
-PUT  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
-Content-Type: application/json
+# PUT  http://localhost:3000/api/auth/user/68166e9d10f7f60a2e5671be
+# Content-Type: application/json
 
 
-{
-    "email" : "Hellofordelete@example.com",
-    "password": "katsubook",
-    "name": "Katsuokmakmak",
-    "lastName": "waipana",
-    "dateOfBirth": "1999-02-02",
-    "address": "11/111 KFC Hungry Hungry",
-    "city": "Bangkok",
-    "country": "Thailand",
-    "phoneNumber": "091-234-5679"
-}
+# {
+#     "email" : "Hellofordelete@example.com",
+#     "password": "katsubook",
+#     "name": "Katsuokmakmak",
+#     "lastName": "waipana",
+#     "dateOfBirth": "1999-02-02",
+#     "address": "11/111 KFC Hungry Hungry",
+#     "city": "Bangkok",
+#     "country": "Thailand",
+#     "phoneNumber": "091-234-5679"
+# }
 
 ### Update Password
 PATCH  http://localhost:3000/api/auth/user/681738e830fcf924006f4a45/password
@@ -95,5 +95,11 @@ GET  http://localhost:3000/api/auth/city
 Content-Type: application/json
 
 
+### Get city by country id
+GET  http://localhost:3000/api/auth/country/681b0ab2194607ca70d57fe5/cities
+Content-Type: application/json
 
-
+###Profile
+GET http://localhost:3000/api/auth/profile
+Content-Type: application/json
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODFkNjhiMzQ0MTc4ZTgyYjdjZDkyZDUiLCJpYXQiOjE3NDY3NjU4MzQsImV4cCI6MTc0Njc2OTQzNH0.nrMEmpUP-AJg19jh4f5Oz1yxaXEIbTeZy27nI43pLlc

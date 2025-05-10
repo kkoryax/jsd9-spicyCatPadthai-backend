@@ -152,3 +152,25 @@ export const getAllProductById = async (req, res) => {
     });
   }
 };
+
+
+export const getNewRelease = async(req, res) => {
+    try {
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+      const newRelease = await Product.find(
+        { releaseDate: { $gte: twoWeeksAgo } }, //No releaseDate in Schema rightnow
+        { title: 1, releaseDate: 1 }
+      )
+      .sort({ releaseDate: -1 })
+      .limit(12);
+
+    } catch (err) {
+        return res.status(500).json({
+          error: true,
+          message: "Internal Server Error",
+          details: err.message
+        })
+    }
+}
