@@ -27,11 +27,16 @@ const OrderSchema = new Schema({
     enum: ["processing", "shipped", "completed", "canceled"],
     default: "processing",
   },
-  payment_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Payment",
+  payment_method: {
+    type: String,
+    enum: ["promptpay", "creditcard"],
+    default: "promptpay",
   },
-
+  payment_status: {
+    type: String,
+    enum: ["pending", "completed", "failed"],
+    default: "pending",
+  },
   createdOn: { type: Date, default: new Date().getTime() },
   updated_at: { type: Date, default: new Date().getTime() },
   tracking_number: { type: String, default: generateTrackingNumber },

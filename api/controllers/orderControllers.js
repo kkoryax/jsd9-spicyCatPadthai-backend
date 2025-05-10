@@ -1,15 +1,13 @@
 import { Order } from "../../models/Order.js";
 import { OrderDetail } from "../../models/OrderDetail.js";
-import { Payment } from "../../models/Payment.js";
 import { User } from "../../models/User.js";
+import {Payment} from "../../models/Payment.js"
 
 export const createOrder = async (req, res) => {
   const {
     user_id,
     tracking_number,
     order_status,
-    payment_method,
-    payment_status,
     total_price,
     items,
   } = req.body;
@@ -35,20 +33,12 @@ export const createOrder = async (req, res) => {
     }
     await OrderDetail.insertMany(orderItems);
 
-    const payment = new Payment({
-      order_id: order._id,
-      amount: order.total_price,
-      payment_method,
-      payment_status,
-      payment_date: new Date(),
-    });
-    await payment.save();
+  
     res.status(201).json({
       error: false,
       message: "Order created successfully",
       order,
       orderItems,
-      payment,
     });
   } catch (err) {
     res.status(500).json({
