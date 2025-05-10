@@ -1,8 +1,7 @@
-import { Product } from "../../models/Product.js";
+import { Title } from "../../models/Title.js";
 import { Types } from "mongoose";
 import { ProductCategory } from "../../models/ProductCategory.js";
-import { Title } from "../../models/Title.js";
-import { Author } from "../../models/Author.js";
+import { Product } from "../../models/Product.js";
 
 // Get all products
 export const getAllProducts = async (req, res) => {
@@ -188,46 +187,46 @@ export const getNewRelease = async (req, res) => {
 
 // Get similar products based on shared categories
 export const getSimilarProducts = async (req, res) => {
-  const { productId } = req.params;
-
-  if (!Types.ObjectId.isValid(productId)) {
-    return res
-      .status(400)
-      .json({ error: true, message: "Invalid product ID format" });
+  const { titleId } = req.params;
+  // Validate titleId format
+  if (!titleId || !Types.ObjectId.isValid(titleId)) {
+    return res.status(400).json({
+      error: true,
+      message: "Invalid titleId format.",
+      similar_books: [],
+    });
   }
 
   try {
-    // 1. Fetch the original product to get its title_id
-    const originalProduct = await Product.findById(productId);
-    if (!originalProduct) {
-      return res
-        .status(404)
-        .json({ error: true, message: "Original product not found" });
-    }
-    const originalTitleId = originalProduct.title_id;
-
-    // 2. Find category_ids associated with the original product's title
+    // 1. Get category IDs for the original title
+    const originalTitleObjectId = new Types.ObjectId(titleId);
     const categoriesOfOriginalTitle = await ProductCategory.find({
-      title_id: originalTitleId,
-    }).select("category_id -_id"); // We only need the category_id
+      title_id: originalTitleObjectId, // Use ObjectId for querying
+    }).select("category_id");
+
     const categoryIds = categoriesOfOriginalTitle.map((pc) => pc.category_id);
 
     if (categoryIds.length === 0) {
-      // No categories for this product's title, so can't find similar by category
       return res.json({ error: false, similar_books: [] });
     }
 
-    // 3. Find all title_ids that share any of these categories
+    // 2. Find all title_ids that share any of these categories.
     const similarTitleIds = await ProductCategory.find({
       category_id: { $in: categoryIds },
-    }).distinct("title_id"); // Get unique title_ids that share these categories
+    }).distinct("title_id"); // Returns an array of title_id values
 
-    // 4. Fetch products from these similar titles, excluding the original product itself
+    if (similarTitleIds.length === 0) {
+      return res.json({ error: false, similar_books: [] });
+    }
+
+    // 3. Fetch products from these similar titles.
+    // The _id: { $ne: originalTitleObjectId } condition compares Product._id with the original Title's ID.
+    // This is unlikely to be the cause of zero results but isn't precisely "excluding the original product viewed".
     const similarProducts = await Product.aggregate([
       {
         $match: {
           title_id: { $in: similarTitleIds }, // Products from titles sharing categories
-          _id: { $ne: new Types.ObjectId(productId) }, // Exclude the original product
+          _id: { $ne: originalTitleObjectId }, // Compare Product._id with original Title's ID
         },
       },
       { $sample: { size: 4 } }, // Randomly pick up to 4 products
@@ -263,13 +262,9 @@ export const getSimilarProducts = async (req, res) => {
           name: "$name_vol", // Product's volume name
           volume: "$volume_no", // Product's volume number
           price: "$price",
+          img: "$picture",
           title: "$titleDetails.title_name", // Title's main name
-          img: {
-            $ifNull: [
-              "$titleDetails.title_img_url",
-              "https://mir-s3-cdn-cf.behance.net/project_modules/1400/cdd17c167263253.6425cd49aab91.jpg",
-            ],
-          }, // Image from Title, with fallback
+
           author: "$authorDetails.author_name",
         },
       },
@@ -278,12 +273,10 @@ export const getSimilarProducts = async (req, res) => {
     res.json({ error: false, similar_books: similarProducts });
   } catch (err) {
     console.error("Error in getSimilarProducts:", err);
-    res
-      .status(500)
-      .json({
-        error: true,
-        message: "Failed to fetch similar products",
-        details: err.message,
-      });
+    res.status(500).json({
+      error: true,
+      message: "Failed to fetch similar products",
+      details: err.message,
+    });
   }
 };

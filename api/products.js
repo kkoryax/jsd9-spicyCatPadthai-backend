@@ -6,6 +6,7 @@ import {
   createProduct,
   getAllProducts,
   getAllProductById,
+  getSimilarProducts,
 } from "./controllers/productController.js";
 
 const router = express.Router();
@@ -26,5 +27,7 @@ router.put("/products/:_id", updateProductById);
 router.delete("/products/:_id", deleteProductById);
 
 router.get("/productss/:title_id", getAllProductById)
+
+router.get("/products/get-similar/:titleId", getSimilarProducts)
 
 export default router;
