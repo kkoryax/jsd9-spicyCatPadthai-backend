@@ -12,7 +12,7 @@ export const getCategoriesByTitleId = async (req, res) => {
     }
     const productCategories = await ProductCategory.find({
       title_id: new Types.ObjectId(title_id),
-    }).populate('category_id');
+    }).populate("category_id");
 
     if (!productCategories || productCategories.length === 0) {
       // Check if the array is empty
@@ -67,7 +67,7 @@ export const createCategory = async (req, res) => {
     console.error(err);
     res.status(500).json({
       message: "Error creating category",
-      error: err, 
+      error: err,
     });
   }
 };

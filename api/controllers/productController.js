@@ -2,7 +2,6 @@ import { Title } from "../../models/Title.js";
 import { Types } from "mongoose";
 import { ProductCategory } from "../../models/ProductCategory.js";
 import { Product } from "../../models/Product.js";
-import { Types } from "mongoose";
 import { trendingMangaTitles } from "../../util/trendingManga.js";
 
 // Get all products
