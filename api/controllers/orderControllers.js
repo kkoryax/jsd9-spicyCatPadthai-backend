@@ -1,6 +1,8 @@
 import { Order } from "../../models/Order.js";
 import { OrderDetail } from "../../models/OrderDetail.js";
 import { User } from "../../models/User.js";
+import { Title } from "../../models/Title.js";
+import { Author } from "../../models/Author.js";
 import mongoose from "mongoose";
 import { Payment } from "../../models/Payment.js";
 
@@ -77,16 +79,12 @@ export const getOrderById = async (req, res) => {
           { path: "author_id", model: "Author" },
         ],
       });
-    const paymentDetails = await Payment.findOne({ order_id: _id }).select(
-      "payment_method payment_status"
-    );
+
     res.json({
       error: false,
       userDetails,
       order,
       orderDetails,
-      paymentMethod: paymentDetails?.payment_method || null,
-      paymentStatus: paymentDetails?.payment_status || null,
     });
   } catch (err) {
     res.status(500).json({
@@ -206,14 +204,14 @@ export const updateOrder = async (req, res) => {
     }
 
     // Update Payment record
-    const payment = await Payment.findOne({ order_id: order._id });
-    if (payment) {
-      payment.amount = order.total_price;
-      payment.payment_method = payment_method || payment.payment_method;
-      payment.payment_status = payment_status || payment.payment_status;
-      payment.payment_date = new Date();
-      await payment.save();
-    }
+    // const payment = await Payment.findOne({ order_id: order._id });
+    // if (payment) {
+    //   payment.amount = order.total_price;
+    //   payment.payment_method = payment_method || payment.payment_method;
+    //   payment.payment_status = payment_status || payment.payment_status;
+    //   payment.payment_date = new Date();
+    //   await payment.save();
+    // }
 
     res.status(200).json({
       error: false,
@@ -256,43 +254,129 @@ export const deleteOrderById = async (req, res) => {
 };
 
 export const searchOrder = async (req, res) => {
-  const user = req.user;
-  const { query } = req.query;
-
-  if (!query) {
-    return res.status(400).json({
-      error: true,
-      message: "Search query is required",
-    });
-  }
-
-  let objectIdSearch = null;
-  if (mongoose.Types.ObjectId.isValid(query)) {
-    objectIdSearch = new mongoose.Types.ObjectId(query);
-  }
-
   try {
-    const searchConditions = [
-      { order_status: { $regex: new RegExp(query, "i") } },
-      { tracking_number: { $regex: new RegExp(query, "i") } },
-    ];
+    const user = req.user;
+    const { query } = req.query;
 
-    if (objectIdSearch) {
-      searchConditions.push({ _id: objectIdSearch });
+    if (!query) {
+      return res.status(400).json({
+        error: true,
+        message: "Search query is required",
+      });
     }
 
-    const matchingOrders = await Order.find({
-      user_id: user.user._id,
-      $or: searchConditions,
-    });
+    if (!user?.user?._id) {
+      return res.status(401).json({
+        error: true,
+        message: "Unauthorized: No user found",
+      });
+    }
+
+    const searchResults = await OrderDetail.aggregate([
+      // Join Orders
+      {
+        $lookup: {
+          from: "orders",
+          localField: "order_id",
+          foreignField: "_id",
+          as: "order",
+        },
+      },
+      { $unwind: "$order" },
+
+      // Filter orders for this user
+      {
+        $match: { "order.user_id": new mongoose.Types.ObjectId(user.user._id) },
+      },
+
+      // Join Products
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_id",
+          foreignField: "_id",
+          as: "product",
+        },
+      },
+      { $unwind: "$product" },
+
+      // Join Titles
+      {
+        $lookup: {
+          from: "titles",
+          localField: "product.title_id",
+          foreignField: "_id",
+          as: "title",
+        },
+      },
+      { $unwind: { path: "$title" } },
+
+      // Join Authors
+      {
+        $lookup: {
+          from: "authors",
+          localField: "product.author_id",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+      { $unwind: { path: "$author" } },
+      {
+        $addFields: {
+          "order.id_string": { $toString: "$order._id" },
+        },
+      },
+
+      // Apply filtering conditions for title, author, order status, tracking number, and product volume
+      {
+        $match: {
+          $or: [
+            { "title.title_name": { $regex: query, $options: "i" } },
+            { "author.author_name": { $regex: query, $options: "i" } },
+            { "product.name_vol": { $regex: query, $options: "i" } },
+            { "order.order_status": { $regex: query, $options: "i" } },
+            { "order.tracking_number": { $regex: query, $options: "i" } },
+            { "order.id_string": { $regex: query, $options: "i" } },
+          ],
+        },
+      },
+      {
+        $group: {
+          _id: "$order_id", // group by order ID
+          order_status: { $first: "$order.order_status" },
+          tracking_number: { $first: "$order.tracking_number" },
+          createdOn: { $first: "$order.createdOn" },
+          total_price: { $first: "$order.total_price" },
+          product_id: { $first: "$product._id" },
+          title_name: { $first: "$title.title_name" },
+          author_name: { $first: "$author.author_name" },
+          name_vol: { $first: "$product.name_vol" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          order_id: "$_id",
+          order_status: 1,
+          tracking_number: 1,
+          createdOn: 1,
+          total_price: 1,
+          product_id: 1,
+          title_name: 1,
+          author_name: 1,
+          name_vol: 1,
+        },
+      },
+    ]);
 
     return res.json({
       error: false,
-      orders: matchingOrders,
-      message: "Orders matching the search query retrieved successfully",
+      searchResults,
+      message:
+        "Orders matching title, author, or other details retrieved successfully",
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error in searchOrder aggregation:", error);
     return res.status(500).json({
       error: true,
       message: "Internal Server Error",
