@@ -167,99 +167,99 @@ export const getAllProductById = async (req, res) => {
   }
 };
 
-//GET New Releaseexport const getNewRelease = async (req, res) => {
+//GET New Release
+export const getNewRelease = async (req, res) => {
   try {
     const thresholdDate = new Date();
     thresholdDate.setDate(thresholdDate.getDate() - 14);
 
-      const newReleaseTitles = await Product.aggregate([
-        {
-          $addFields: {
-            parsedReleasedDate: { $toDate: "$releasedDate" }
-          }
+    const newReleaseTitles = await Product.aggregate([
+      {
+        $addFields: {
+          parsedReleasedDate: { $toDate: "$releasedDate" },
         },
-        {
-          $match: {
-            parsedReleasedDate: { $gte: thresholdDate }
-          }
+      },
+      {
+        $match: {
+          parsedReleasedDate: { $gte: thresholdDate },
         },
-        {
-          $sort: { parsedReleasedDate: -1 }
+      },
+      {
+        $sort: { parsedReleasedDate: -1 },
+      },
+      {
+        $lookup: {
+          from: "titles",
+          localField: "title_id",
+          foreignField: "_id",
+          as: "titleDetails",
         },
-        {
-          $lookup: {
-            from: "titles",
-            localField: "title_id",
-            foreignField: "_id",
-            as: "titleDetails"
-          }
+      },
+      {
+        $unwind: {
+          path: "$titleDetails",
+          preserveNullAndEmptyArrays: false,
         },
-        {
-          $unwind: {
-            path: "$titleDetails",
-            preserveNullAndEmptyArrays: false
-          }
+      },
+      {
+        $group: {
+          _id: "$titleDetails._id",
+          title_name: { $first: "$titleDetails.title_name" },
+          title_description: { $first: "$titleDetails.title_description" },
+          title_picture: { $first: "$titleDetails.title_picture" },
+          author_id: { $first: "$titleDetails.author_id" },
+          latest_product_released_date: { $first: "$parsedReleasedDate" },
+          latest_product_price: { $first: "$price" },
         },
-        {
-          $group: {
-            _id: "$titleDetails._id",
-            title_name: { $first: "$titleDetails.title_name" },
-            title_description: { $first: "$titleDetails.title_description" },
-            title_picture: { $first: "$titleDetails.title_picture" },
-            author_id: { $first: "$titleDetails.author_id" },
-            latest_product_released_date: { $first: "$parsedReleasedDate" },
-            latest_product_price: { $first: "$price" }
-          }
+      },
+      {
+        $sort: { latest_product_released_date: -1 },
+      },
+      {
+        $limit: 12,
+      },
+      {
+        $lookup: {
+          from: "authors",
+          localField: "author_id",
+          foreignField: "_id",
+          as: "authorDetails",
         },
-        {
-          $sort: { latest_product_released_date: -1 }
+      },
+      {
+        $unwind: {
+          path: "$authorDetails",
+          preserveNullAndEmptyArrays: true,
         },
-        {
-          $limit: 12
+      },
+      {
+        $project: {
+          _id: 1,
+          title_name: 1,
+          title_description: 1,
+          title_picture: 1,
+          price: "$latest_product_price",
+          authorDetails: {
+            _id: "$authorDetails._id",
+            author_name: "$authorDetails.author_name",
+          },
         },
-        {
-          $lookup: {
-            from: "authors",
-            localField: "author_id",
-            foreignField: "_id",
-            as: "authorDetails"
-          }
-        },
-        {
-          $unwind: {
-            path: "$authorDetails",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $project: {
-            _id: 1,
-            title_name: 1,
-            title_description: 1,
-            title_picture: 1,
-            price: "$latest_product_price",
-            authorDetails: {
-              _id: "$authorDetails._id",
-              author_name: "$authorDetails.author_name"
-            }
-          }
-        }
-      ]);
+      },
+    ]);
 
-      res.status(200).json({
-        error: false,
-        titles: newReleaseTitles,
-        message: "New release titles retrieved successfully"
-      });
-
-    } catch (err) {
-        console.error("Error in getNewRelease:", err);
-        return res.status(500).json({
-          error: true,
-          message: "Internal Server Error",
-          details: err.message
-        });
-    }
+    res.status(200).json({
+      error: false,
+      titles: newReleaseTitles,
+      message: "New release titles retrieved successfully",
+    });
+  } catch (err) {
+    console.error("Error in getNewRelease:", err);
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+      details: err.message,
+    });
+  }
 };
 
 //GET trending manga
@@ -268,7 +268,9 @@ export const getTrendingManga = async (req, res) => {
     const trendingData = await Product.aggregate([
       {
         $match: {
-          name_vol: { $in: trendingMangaTitles.map(name => new RegExp(name, "i")) },
+          name_vol: {
+            $in: trendingMangaTitles.map((name) => new RegExp(name, "i")),
+          },
         },
       },
       {
@@ -287,8 +289,8 @@ export const getTrendingManga = async (req, res) => {
       },
       {
         $match: {
-          "titleDetails._id": { $exists: true, $ne: null }
-        }
+          "titleDetails._id": { $exists: true, $ne: null },
+        },
       },
       {
         $group: {
@@ -296,7 +298,7 @@ export const getTrendingManga = async (req, res) => {
           title_name: { $first: "$titleDetails.title_name" },
           title_picture: { $first: "$titleDetails.title_picture" },
           author_id: { $first: "$titleDetails.author_id" },
-        }
+        },
       },
       {
         $limit: 12,
@@ -335,20 +337,6 @@ export const getTrendingManga = async (req, res) => {
     res.status(500).json({
       error: true,
       message: "Internal server error",
-      details: err.message,
-    });
-  }
-};
-    const newRelease = await Product.find(
-      { releaseDate: { $gte: twoWeeksAgo } }, //No releaseDate in Schema rightnow
-      { title: 1, releaseDate: 1 }
-    )
-      .sort({ releaseDate: -1 })
-      .limit(12);
-  } catch (err) {
-    return res.status(500).json({
-      error: true,
-      message: "Internal Server Error",
       details: err.message,
     });
   }
