@@ -4,10 +4,35 @@ import { Types } from "mongoose";
 //GET all titles
 export const getAllTitles = async(req, res) => {
     try {
-        const title = await Title.find();
+        const titles = await Title.aggregate([
+            {
+                $lookup: {
+                    from: "authors",
+                    localField: "author_id",
+                    foreignField: "_id",
+                    as: "authorDetails"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$authorDetails",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    title_name: 1,
+                    title_description: 1,
+                    title_picture: 1,
+                    author_id: { _id: "$authorDetails._id", author_name: "$authorDetails.author_name" }
+                }
+            }
+        ]);
         res.json({
             error: false,
-            title
+            title: titles,
+            message: "Get all titles successfully!"
         });
     } catch (err) {
         res.status(500).json({
