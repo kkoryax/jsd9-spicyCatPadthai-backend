@@ -1,16 +1,12 @@
 import { Order } from "../../models/Order.js";
 import { OrderDetail } from "../../models/OrderDetail.js";
 import { User } from "../../models/User.js";
-import {Payment} from "../../models/Payment.js"
+import mongoose from "mongoose";
+import { Payment } from "../../models/Payment.js";
 
 export const createOrder = async (req, res) => {
-  const {
-    user_id,
-    tracking_number,
-    order_status,
-    total_price,
-    items,
-  } = req.body;
+  const { user_id, tracking_number, order_status, total_price, items } =
+    req.body;
 
   try {
     const order = new Order({
@@ -33,7 +29,6 @@ export const createOrder = async (req, res) => {
     }
     await OrderDetail.insertMany(orderItems);
 
-  
     res.status(201).json({
       error: false,
       message: "Order created successfully",
@@ -256,6 +251,51 @@ export const deleteOrderById = async (req, res) => {
       error: true,
       message: "Failed to delete the order",
       details: err.message,
+    });
+  }
+};
+
+export const searchOrder = async (req, res) => {
+  const user = req.user;
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).json({
+      error: true,
+      message: "Search query is required",
+    });
+  }
+
+  let objectIdSearch = null;
+  if (mongoose.Types.ObjectId.isValid(query)) {
+    objectIdSearch = new mongoose.Types.ObjectId(query);
+  }
+
+  try {
+    const searchConditions = [
+      { order_status: { $regex: new RegExp(query, "i") } },
+      { tracking_number: { $regex: new RegExp(query, "i") } },
+    ];
+
+    if (objectIdSearch) {
+      searchConditions.push({ _id: objectIdSearch });
+    }
+
+    const matchingOrders = await Order.find({
+      user_id: user.user._id,
+      $or: searchConditions,
+    });
+
+    return res.json({
+      error: false,
+      orders: matchingOrders,
+      message: "Orders matching the search query retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
     });
   }
 };
