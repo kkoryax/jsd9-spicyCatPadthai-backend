@@ -46,30 +46,52 @@ export const getAllTitles = async (req, res) => {
   }
 };
 
-//GET title by search query
+//GET title by search query (title, description, author)
 export const searchTitle = async (req, res) => {
-  const { query } = req.query;
-  if (!query) {
-    res.status(400).json({
-      error: true,
-      message: "Search query is required",
-    });
-  }
-  try {
-    const matchingTitle = await Title.find({
-      $or: [{ title_name: { $regex: new RegExp(query, "i") } }],
-    });
-    res.json({
-      error: false,
-      title_name: matchingTitle,
-      message: "Matching title via search query retrieve successful",
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: true,
-      message: "Internal Server Error",
-    });
-  }
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(400).json({
+            error: true,
+            message: "Search query is required"
+        });
+    }
+
+    try {
+        const matchingTitle = await Title.aggregate([
+            {
+                $lookup: {
+                    from: "authors", 
+                    localField: "author_id",
+                    foreignField: "_id",
+                    as: "authorInfo"
+                }
+            },
+            {
+                $unwind: "$authorInfo"
+            },
+            {
+                $match: {
+                    $or: [
+                        { title_name: { $regex: new RegExp(query, "i") } },
+                        { title_description: { $regex: new RegExp(query, "i") } },
+                        { "authorInfo.author_name": { $regex: new RegExp(query, "i") } }
+                    ]
+                }
+            }
+        ]);
+
+        res.json({
+            error: false,
+            title: matchingTitle,
+            message: "Matching titles retrieved successfully"
+        });
+    } catch (err) {
+        res.status(500).json({
+            error: true,
+            message: "Internal Server Error"
+        });
+    }
 };
 
 //CREATE new title

@@ -31,3 +31,7 @@ Content-Type: application/json
 ###GET title by id
 GET http://localhost:3000/api/titles/681adda55212aabd7d60dc7b
 Content-Type: application/json
+
+###Search 
+GET http://localhost:3000/api/titles/search?query=brothers 
+Content-Type: application/json
