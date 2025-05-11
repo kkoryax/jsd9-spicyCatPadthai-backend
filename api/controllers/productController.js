@@ -1,5 +1,6 @@
 import { Product } from "../../models/Product.js";
 import { Types } from "mongoose";
+import { trendingMangaTitles } from "../../util/trendingManga.js";
 
 // Get all products
 export const getAllProducts = async (req, res) => {
@@ -220,4 +221,82 @@ export const getNewRelease = async(req, res) => {
           details: err.message
         });
     }
+};
+
+//GET trending manga
+export const getTrendingManga = async (req, res) => {
+  try {
+    const trendingData = await Product.aggregate([
+      {
+        $match: {
+          name_vol: { $in: trendingMangaTitles.map(name => new RegExp(name, "i")) },
+        },
+      },
+      {
+        $lookup: {
+          from: "titles",
+          localField: "title_id",
+          foreignField: "_id",
+          as: "titleDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$titleDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $match: {
+          "titleDetails._id": { $exists: true, $ne: null }
+        }
+      },
+      {
+        $group: {
+          _id: "$titleDetails._id",
+          title_name: { $first: "$titleDetails.title_name" },
+          title_picture: { $first: "$titleDetails.title_picture" },
+          author_id: { $first: "$titleDetails.author_id" },
+        }
+      },
+      {
+        $limit: 12,
+      },
+      {
+        $lookup: {
+          from: "authors",
+          localField: "author_id",
+          foreignField: "_id",
+          as: "authorDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$authorDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: "$_id",
+          title_name: "$title_name",
+          title_picture: "$title_picture",
+          author_name: "$authorDetails.author_name",
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      error: false,
+      trending: trendingData,
+      message: "Trending manga loaded",
+    });
+  } catch (err) {
+    console.error("Error in getTrendingManga:", err);
+    res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      details: err.message,
+    });
+  }
 };

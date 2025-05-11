@@ -37,3 +37,7 @@ Content-Type: application/json
 ###GET NewRelease
 GET http://localhost:3000/products/new-release
 Content-Type: application/json
+
+###GET Trending Book
+GET http://localhost:3000/products/trending-book
+Content-Type: application/json

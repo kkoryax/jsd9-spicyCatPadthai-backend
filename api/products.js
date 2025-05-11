@@ -6,7 +6,8 @@ import {
   createProduct,
   getAllProducts,
   getAllProductById,
-  getNewRelease
+  getNewRelease,
+  getTrendingManga
 } from "./controllers/productController.js";
 
 const router = express.Router();
@@ -14,8 +15,11 @@ const router = express.Router();
 // GET all products
 router.get("/products", getAllProducts);
 
-//get NewRelease
+//GET New Release
 router.get("/products/new-release", getNewRelease);
+
+//GET Trending Manga
+router.get("/products/trending-book", getTrendingManga)
 
 // GET product by id
 router.get("/products/:_id", getProductById);
