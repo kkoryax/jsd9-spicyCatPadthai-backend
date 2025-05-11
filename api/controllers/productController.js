@@ -158,27 +158,21 @@ export const getAllProductById = async (req, res) => {
 export const getNewRelease = async(req, res) => {
     try {
       const thresholdDate = new Date();
-
       thresholdDate.setDate(thresholdDate.getDate() - 14);
 
-      const newRelease = await Product.aggregate([
-        { $addFields: { parsedReleasedDate: { $toDate: "$releasedDate" } } },
-        { $match: { parsedReleasedDate: { $gte: thresholdDate } } },
-        { $sort: { parsedReleasedDate: -1 } },
-        { $limit: 12 },
+      const newReleaseTitles = await Product.aggregate([
         {
-          $lookup: {
-            from: "authors",
-            localField: "author_id",
-            foreignField: "_id",
-            as: "authorDetails"
+          $addFields: {
+            parsedReleasedDate: { $toDate: "$releasedDate" }
           }
         },
         {
-          $unwind: {
-            path: "$authorDetails",
-            preserveNullAndEmptyArrays: true // Keep product even if title is not found
+          $match: {
+            parsedReleasedDate: { $gte: thresholdDate }
           }
+        },
+        {
+          $sort: { parsedReleasedDate: -1 }
         },
         {
           $lookup: {
@@ -191,26 +185,59 @@ export const getNewRelease = async(req, res) => {
         {
           $unwind: {
             path: "$titleDetails",
-            preserveNullAndEmptyArrays: true // Keep product even if title is not found
+            preserveNullAndEmptyArrays: false
+          }
+        },
+        {
+          $group: {
+            _id: "$titleDetails._id",
+            title_name: { $first: "$titleDetails.title_name" },
+            title_description: { $first: "$titleDetails.title_description" },
+            title_picture: { $first: "$titleDetails.title_picture" },
+            author_id: { $first: "$titleDetails.author_id" },
+            latest_product_released_date: { $first: "$parsedReleasedDate" },
+            latest_product_price: { $first: "$price" }
+          }
+        },
+        {
+          $sort: { latest_product_released_date: -1 }
+        },
+        {
+          $limit: 12
+        },
+        {
+          $lookup: {
+            from: "authors",
+            localField: "author_id",
+            foreignField: "_id",
+            as: "authorDetails"
+          }
+        },
+        {
+          $unwind: {
+            path: "$authorDetails",
+            preserveNullAndEmptyArrays: true
           }
         },
         {
           $project: {
             _id: 1,
-            name_vol: 1,
-            releasedDate: 1,
-            price: 1,
-            picture: 1,
-            author_id: { _id: "$authorDetails._id", author_name: "$authorDetails.author_name" },
-            title_id: { _id: "$titleDetails._id", title_name: "$titleDetails.title_name" }
+            title_name: 1,
+            title_description: 1,
+            title_picture: 1,
+            price: "$latest_product_price",
+            authorDetails: {
+              _id: "$authorDetails._id",
+              author_name: "$authorDetails.author_name"
+            }
           }
         }
       ]);
 
       res.status(200).json({
         error: false,
-        newRelease,
-        message: "New releases retrieved successfully"
+        titles: newReleaseTitles,
+        message: "New release titles retrieved successfully"
       });
 
     } catch (err) {
