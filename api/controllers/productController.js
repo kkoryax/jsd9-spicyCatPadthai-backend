@@ -161,17 +161,47 @@ export const getNewRelease = async(req, res) => {
       thresholdDate.setDate(thresholdDate.getDate() - 14);
 
       const newRelease = await Product.aggregate([
-        {$addFields: {parsedReleasedDate: { $toDate: "$releasedDate" }}},
-        {$match: {parsedReleasedDate: { $gte: thresholdDate }}},
-        {$sort: { parsedReleasedDate: -1 }},
-        {$limit: 12},
-        {$project:
-          {
+        { $addFields: { parsedReleasedDate: { $toDate: "$releasedDate" } } },
+        { $match: { parsedReleasedDate: { $gte: thresholdDate } } },
+        { $sort: { parsedReleasedDate: -1 } },
+        { $limit: 12 },
+        {
+          $lookup: {
+            from: "authors",
+            localField: "author_id",
+            foreignField: "_id",
+            as: "authorDetails"
+          }
+        },
+        {
+          $unwind: {
+            path: "$authorDetails",
+            preserveNullAndEmptyArrays: true // Keep product even if title is not found
+          }
+        },
+        {
+          $lookup: {
+            from: "titles",
+            localField: "title_id",
+            foreignField: "_id",
+            as: "titleDetails"
+          }
+        },
+        {
+          $unwind: {
+            path: "$titleDetails",
+            preserveNullAndEmptyArrays: true // Keep product even if title is not found
+          }
+        },
+        {
+          $project: {
             _id: 1,
             name_vol: 1,
             releasedDate: 1,
             price: 1,
-            picture: 1
+            picture: 1,
+            author_id: { _id: "$authorDetails._id", author_name: "$authorDetails.author_name" },
+            title_id: { _id: "$titleDetails._id", title_name: "$titleDetails.title_name" }
           }
         }
       ]);
