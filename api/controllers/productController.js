@@ -153,30 +153,41 @@ export const getAllProductById = async (req, res) => {
   }
 };
 
-
+//GET New Release
 export const getNewRelease = async(req, res) => {
     try {
-      const twoWeeksAgo = new Date();
-      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+      const thresholdDate = new Date();
 
-      const newRelease = await Product.find(
-        { releasedDate: { $gte: twoWeeksAgo } }, //No releaseDate in Schema rightnow
-        { title: 1, releasedDate: 1 }
-      )
-      .sort({ releaseDate: -1 })
-      .limit(12);
+      thresholdDate.setDate(thresholdDate.getDate() - 14);
+
+      const newRelease = await Product.aggregate([
+        {$addFields: {parsedReleasedDate: { $toDate: "$releasedDate" }}},
+        {$match: {parsedReleasedDate: { $gte: thresholdDate }}},
+        {$sort: { parsedReleasedDate: -1 }},
+        {$limit: 12},
+        {$project:
+          {
+            _id: 1,
+            name_vol: 1,
+            releasedDate: 1,
+            price: 1,
+            picture: 1
+          }
+        }
+      ]);
 
       res.status(200).json({
         error: false,
         newRelease,
-        message: "New released retrieved successfully"
-      })
+        message: "New releases retrieved successfully"
+      });
 
     } catch (err) {
+        console.error("Error in getNewRelease:", err);
         return res.status(500).json({
           error: true,
           message: "Internal Server Error",
           details: err.message
-        })
+        });
     }
-}
+};

@@ -17,7 +17,7 @@ Content-Type: application/json
     "product_status": "available"
   }
 ### GET a product
-GET http://localhost:3000/products/eba04dbc-5ebb-41d4-ad93-2bf394035a69
+GET http://localhost:3000/products/6819d659d64cf3a576089525
 
 ### Update a product
 PUT http://localhost:3000/api/products/d0ec191d-9568-4c8a-ae72-c86193818679
@@ -32,4 +32,8 @@ Content-Type: application/json
 
 ### Delete a product
 DELETE  http://localhost:3000/api/products/23eb08e4-f831-440f-82de-5693531bd37c
+Content-Type: application/json
+
+###GET NewRelease
+GET http://localhost:3000/products/new-release
 Content-Type: application/json
