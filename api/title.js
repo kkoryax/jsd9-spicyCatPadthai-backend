@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllTitles, createNewTitle, searchTitle, deleteTitle, getTitleById, updateTitle} from "./controllers/titleControllers.js";
+import { getAllTitles, createNewTitle, searchTitle, deleteTitle, getTitleById, updateTitle,} from "./controllers/titleControllers.js";
 
 const router = express.Router();
 

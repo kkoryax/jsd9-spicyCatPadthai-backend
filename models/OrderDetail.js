@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 
 const OrderDetailSchema = new Schema({
+    // OrderDetail{_id}
   order_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Order",
@@ -12,7 +13,7 @@ const OrderDetailSchema = new Schema({
     required: true,
   },
   quantity: { type: Number, required: true },
-  price: { type: Number, required: true }, // Price per unit at the time of order
+  subtotal_price: { type: Number, required: true }, // Price per unit at the time of order
 });
 
 export const OrderDetail = model("OrderDetail", OrderDetailSchema);

@@ -6,8 +6,9 @@ import {
   createProduct,
   getAllProducts,
   getAllProductById,
+  getSimilarProducts,
   getNewRelease,
-  getTrendingManga
+  getTrendingManga,
 } from "./controllers/productController.js";
 
 const router = express.Router();
@@ -19,7 +20,7 @@ router.get("/products", getAllProducts);
 router.get("/products/new-release", getNewRelease);
 
 //GET Trending Manga
-router.get("/products/trending-book", getTrendingManga)
+router.get("/products/trending-book", getTrendingManga);
 
 // GET product by id
 router.get("/products/:_id", getProductById);
@@ -32,5 +33,7 @@ router.put("/products/:_id", updateProductById);
 router.delete("/products/:_id", deleteProductById);
 
 router.get("/productss/:title_id", getAllProductById);
+
+router.get("/products/get-similar/:titleId", getSimilarProducts);
 
 export default router;
