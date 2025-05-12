@@ -18,7 +18,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://jsd9-spicycatpadthai-frontend.onrender.com/",
+      "https://jsd9-spicycatpadthai-frontend.onrender.com",
     ],
     credentials: true,
   })
