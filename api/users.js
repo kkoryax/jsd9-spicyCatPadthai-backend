@@ -74,7 +74,11 @@ router.get("/auth/profile", authUser, async (req, res) => {
 
 // LOGOUT
 router.post("/auth/logout", authUser, (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+  });
   res.status(200).json({ message: "Logged out successfully" });
 });
 
