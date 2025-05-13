@@ -354,7 +354,7 @@ export const ResetPasswordByEmail = async (req, res) => {
       message: "Password must be at least 6 characters long.",
     });
   }
-  if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+  if (!/[!@#$%^&*(),.?":{}|<>_]/.test(newPassword)) {
     return res.status(400).json({
       error: true,
       message: "Password must contain at least one special character.",
