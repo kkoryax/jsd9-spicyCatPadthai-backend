@@ -383,6 +383,7 @@ export const getSimilarProducts = async (req, res) => {
         $match: {
           title_id: { $in: similarTitleIds }, // Products from titles sharing categories
           _id: { $ne: originalTitleObjectId }, // Compare Product._id with original Title's ID
+          quantity: { $gt: 0 },
         },
       },
       { $sample: { size: 4 } }, // Randomly pick up to 4 products
