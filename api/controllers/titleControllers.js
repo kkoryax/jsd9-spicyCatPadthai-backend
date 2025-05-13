@@ -58,25 +58,68 @@ export const searchTitle = async (req, res) => {
     }
 
     try {
+        const regexQuery = new RegExp(query, "i");
         const matchingTitle = await Title.aggregate([
             {
                 $lookup: {
-                    from: "authors", 
+                    from: "authors",
                     localField: "author_id",
                     foreignField: "_id",
                     as: "authorInfo"
                 }
             },
             {
-                $unwind: "$authorInfo"
+                $unwind: {
+                    path: "$authorInfo",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "productcategories",
+                    localField: "_id",
+                    foreignField: "title_id",
+                    as: "titleCategoryLinks"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$titleCategoryLinks",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "titleCategoryLinks.category_id",
+                    foreignField: "_id",
+                    as: "categoryDetails"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$categoryDetails",
+                    preserveNullAndEmptyArrays: true
+                }
             },
             {
                 $match: {
                     $or: [
-                        { title_name: { $regex: new RegExp(query, "i") } },
-                        { title_description: { $regex: new RegExp(query, "i") } },
-                        { "authorInfo.author_name": { $regex: new RegExp(query, "i") } }
+                        { title_name: { $regex: regexQuery } },
+                        { title_description: { $regex: regexQuery } },
+                        { "authorInfo.author_name": { $regex: regexQuery } },
+                        { "categoryDetails.category_name": { $regex: regexQuery } }
                     ]
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    title_name: { $first: "$title_name" },
+                    title_description: { $first: "$title_description" },
+                    title_picture: { $first: "$title_picture" },
+                    author_id: { $first: "$author_id" },
+                    authorInfo: { $first: "$authorInfo" }
                 }
             }
         ]);
@@ -84,7 +127,7 @@ export const searchTitle = async (req, res) => {
         res.json({
             error: false,
             title: matchingTitle,
-            message: "Matching titles retrieved successfully"
+            message: "Matching titles (by title, description, author, or category) retrieved successfully"
         });
     } catch (err) {
         res.status(500).json({
