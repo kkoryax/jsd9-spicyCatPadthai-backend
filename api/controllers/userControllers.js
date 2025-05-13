@@ -336,3 +336,60 @@ export const GetCityById = async (req, res) => {
     });
   }
 };
+
+//Reset Password
+export const ResetPasswordByEmail = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return res.status(400).json({
+      error: true,
+      message: "Email and new password are required.",
+    });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({
+      error: true,
+      message: "Password must be at least 6 characters long.",
+    });
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+    return res.status(400).json({
+      error: true,
+      message: "Password must contain at least one special character.",
+    });
+  }
+  if (/\s/.test(newPassword)) {
+    return res.status(400).json({
+      error: true,
+      message: "Password cannot contain spaces.",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "User with this email not found.",
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      error: false,
+      message: "Password has been reset successfully.",
+    });
+  } catch (err) {
+    console.error("Password Reset Error:", err);
+    res.status(500).json({
+      error: true,
+      message: "Server error during password reset.",
+      details: err.message,
+    });
+  }
+};

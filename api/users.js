@@ -12,6 +12,7 @@ import {
   getAllCountries,
   getAllCities,
   GetCityById,
+  ResetPasswordByEmail
 } from "./controllers/userControllers.js";
 
 const router = express.Router();
@@ -81,5 +82,8 @@ router.post("/auth/logout", authUser, (req, res) => {
   });
   res.status(200).json({ message: "Logged out successfully" });
 });
+
+//Reset Password
+router.post("/auth/reset-password", ResetPasswordByEmail );
 
 export default router;
