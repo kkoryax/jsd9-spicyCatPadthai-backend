@@ -77,6 +77,24 @@ export const registerUser = async (req, res) => {
       message: "All fields are required",
     });
   }
+  if (password.length < 6) {
+    return res.status(400).json({
+      error: true,
+      message: "Password must be at least 6 characters long.",
+    });
+  }
+  if (!/[!@#$%^&*(),.?":{}|<>_]/.test(password)) {
+    return res.status(400).json({
+      error: true,
+      message: "Password must contain at least one special character.",
+    });
+  }
+  if (/\s/.test(password)) {
+    return res.status(400).json({
+      error: true,
+      message: "Password cannot contain spaces.",
+    });
+  }
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
