@@ -146,7 +146,7 @@ export const getAllProductById = async (req, res) => {
   try {
     const product = await Product.find({
       title_id: new Types.ObjectId(title_id),
-    }).sort({ volume_no: -1 });
+    }).sort({ volume_no: -1 }).populate('author_id');
     if (!title_id) {
       return res.status(404).json({
         error: true,
