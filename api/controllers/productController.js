@@ -25,7 +25,7 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
   const { _id } = req.params;
   try {
-    const product = await Product.findOne({ _id });
+    const product = await Product.findOne({ _id }).populate("author_id");
     if (!_id) {
       return res.status(404).json({
         error: true,
@@ -146,7 +146,7 @@ export const getAllProductById = async (req, res) => {
   try {
     const product = await Product.find({
       title_id: new Types.ObjectId(title_id),
-    }).sort({ volume_no: -1 });
+    }).sort({ volume_no: -1 }).populate('author_id');
     if (!title_id) {
       return res.status(404).json({
         error: true,
