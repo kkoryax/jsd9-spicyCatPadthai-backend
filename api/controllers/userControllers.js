@@ -104,6 +104,22 @@ export const registerUser = async (req, res) => {
       });
     }
 
+    //Added Birth date validatoin
+    const currentDate = new Date();
+
+    const minDate = new Date();
+    minDate.setFullYear(currentDate.getFullYear() - 100); // Maximum 100 years
+
+    const maxDate = new Date();
+    maxDate.setFullYear(currentDate.getFullYear() - 1); // Minimum 1 year
+
+    if (new Date(dateOfBirth) < minDate || new Date(dateOfBirth) > maxDate) {
+      return res.status(406).json({
+          error: true,
+          message: "Birth Date must be between 1 and 100 years old.",
+    });
+    }
+
     // const city = await City.findOne({ name: cityName });
     // if (!city) {
     //   return res.status(400).json({
